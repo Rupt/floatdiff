@@ -16,12 +16,10 @@ dulpval(double x)
 double
 dulp(double x, double y)
 {
-    uint64_t vx, vy;
-    int64_t hi, lo;
-    vx = dulpval(x);
-    vy = dulpval(y);
-    lo = (vy & 1) - (vx & 1);
-    hi = (vy >> 1) - (vx >> 1);
+    uint64_t vx = dulpval(x);
+    uint64_t vy = dulpval(y);
+    int lo = (vy & 1) - (vx & 1);
+    long long int hi = (vy >> 1) - (vx >> 1);
     return 2.*hi + lo;
 }
 
@@ -37,11 +35,9 @@ dulpvalf(float x)
 float
 dulpf(float x, float y)
 {
-    uint32_t vx, vy;
-    int32_t hi, lo;
-    vx = dulpvalf(x);
-    vy = dulpvalf(y);
-    lo = (vy & 1) - (vx & 1);
-    hi = (vy >> 1) - (vx >> 1);
+    uint32_t vx = dulpvalf(x);
+    uint32_t vy = dulpvalf(y);
+    int lo = (vy & 1) - (vx & 1);
+    long int hi = (vy >> 1) - (vx >> 1);
     return 2.f*hi + lo;
 }
