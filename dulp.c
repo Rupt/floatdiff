@@ -4,7 +4,6 @@ Assumes a context with stdint.h included
 TODO explanation
 */
 
-
 uint64_t
 dulpval(double x)
 {
@@ -20,7 +19,7 @@ dulp(double x, double y)
     uint64_t vy = dulpval(y);
     int lo = (vy & 1) - (vx & 1);
     int64_t hi = (vy >> 1) - (vx >> 1);
-    return 2.*hi + lo;
+    return (float)lo + hi + hi;
 }
 
 
@@ -39,5 +38,5 @@ dulpf(float x, float y)
     uint32_t vy = dulpvalf(y);
     int lo = (vy & 1) - (vx & 1);
     int32_t hi = (vy >> 1) - (vx >> 1);
-    return 2.f*hi + lo;
+    return (float)lo + hi + hi;
 }
