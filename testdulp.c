@@ -77,7 +77,6 @@ testdulpf()
     /* nan, infinity */
     assert(dulpf(NAN, NAN) == 0.);
     assert(dulpf(INFINITY, INFINITY) == 0.);
-    assert(dulpf(NAN, INFINITY) == dulpf(-INFINITY, -NAN));
     assert(dulpf(FLT_MAX, INFINITY) == 1.);
 }
 

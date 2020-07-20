@@ -48,7 +48,6 @@ class testdulp(unittest.TestCase):
     def test_naninf(self):
         self.assertEqual(dulp(nan, nan), 0.)
         self.assertEqual(dulp(inf, inf), 0.)
-        self.assertEqual(dulp(nan, inf), dulp(-inf, -nan))
         self.assertEqual(dulp(fmax, inf), 1.)
 
     def test_type(self):
