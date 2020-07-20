@@ -1,6 +1,7 @@
 /* dulp measures order distances between floating point numbers 
  
 Assumes a context with stdint.h included
+TODO explanation
 */
 
 
@@ -15,15 +16,13 @@ dulpval(double x)
 double
 dulp(double x, double y)
 {
-    const uint64_t shift = 32;
-    const uint64_t mask = (1llu << shift) - 1;
     uint64_t vx, vy;
     int64_t hi, lo;
     vx = dulpval(x);
     vy = dulpval(y);
-    hi = (vy >> shift) - (vx >> shift);
-    lo = (vy & mask) - (vx & mask);
-    return (double)(mask + 1)*hi + lo;
+    lo = (vy & 1) - (vx & 1);
+    hi = (vy >> 1) - (vx >> 1);
+    return 2.*hi + lo;
 }
 
 
@@ -38,13 +37,11 @@ dulpvalf(float x)
 float
 dulpf(float x, float y)
 {
-    const uint32_t shift = 16;
-    const uint32_t mask = (1lu << shift) - 1;
     uint32_t vx, vy;
     int32_t hi, lo;
     vx = dulpvalf(x);
     vy = dulpvalf(y);
-    hi = (vy >> shift) - (vx >> shift);
-    lo = (vy & mask) - (vx & mask);
-    return (float)(mask + 1)*hi + lo;
+    lo = (vy & 1) - (vx & 1);
+    hi = (vy >> 1) - (vx >> 1);
+    return 2.f*hi + lo;
 }
