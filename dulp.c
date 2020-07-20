@@ -18,7 +18,7 @@ dulp(double x, double y)
     const uint64_t shift = 32;
     const uint64_t mask = (1llu << shift) - 1;
     uint64_t vx, vy;
-    long long hi, lo;
+    int64_t hi, lo;
     vx = dulpval(x);
     vy = dulpval(y);
     hi = (vy >> shift) - (vx >> shift);
