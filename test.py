@@ -3,7 +3,7 @@ import sys
 import math
 import dulp
 
-from math import nan, inf
+from math import nan, inf, log2
 from dulp import val, dulp
 
 fmax = sys.float_info.max
@@ -32,6 +32,9 @@ class testdulp(unittest.TestCase):
     def test_increment(self):
         self.assertEqual(dulp(1., 1. + 2.**-52), 1.)
         self.assertEqual(dulp(1.5, 1.5 + 2.**-52), 1.)
+        
+    def test_jump(self):
+        self.assertEqual(log2(dulp(1., 1.5)), 51.)
 
     def test_antisym(self):
         self.assertEqual(dulp(.5, .7), -dulp(.7, .5))
