@@ -24,7 +24,7 @@ testdulp()
     assert(dulp(1.5, 1.5 + pow(2., -52.)) == 1.);
     
     /* jump */
-    assert(log2(dulp(1., 1.5)) == 51.);
+    assert(log2f(dulp(1., 1.5)) == 51.);
 
     /* antisym */
     assert(dulp(.5, .7) == -dulp(.7, .5));
@@ -65,7 +65,7 @@ testdulpf()
     assert(dulpf(1.5, 1.5 + powf(2., -23.)) == 1.);
     
     /* jump */
-    assert(log2(dulpf(1., 1.5)) == 22.);
+    assert(log2f(dulpf(1., 1.5)) == 22.);
 
     /* antisym */
     assert(dulpf(.5, .7) == -dulpf(.7, .5));

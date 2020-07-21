@@ -5,6 +5,6 @@ gcc test.c \
 -pedantic \
 -Werror \
 -std=c99 \
--O1 \
+-lm \
 -march=native \
 -o test && ./test
