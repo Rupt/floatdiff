@@ -13,7 +13,7 @@ dulpval(double x)
 {
     union word64 {double f; uint64_t u;} w;
     w.f = x;
-    return -(w.u >> 63) ^ (w.u | 1llu << 63);
+    return -(w.u >> 63) ^ (w.u | (uint64_t)1 << 63);
 }
 
 
@@ -35,7 +35,7 @@ dulpvalf(float x)
 {
     union word32 {float f; uint32_t u;} w;
     w.f = x;
-    return -(w.u >> 31) ^ (w.u | 1lu << 31);
+    return -(w.u >> 31) ^ (w.u | (uint32_t)1 << 31);
 }
 
 

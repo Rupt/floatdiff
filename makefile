@@ -4,7 +4,7 @@ gcc test.c \
 -Wextra \
 -pedantic \
 -Werror \
--std=c89 \
+-std=c99 \
 -O1 \
 -march=native \
 -o test && ./test

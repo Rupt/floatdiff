@@ -2,17 +2,17 @@
 import ctypes
 from ctypes import Union, c_double, c_ulonglong
 
-class fu64(Union):
+class word64(Union):
     _fields_ = [
-        ("f64", c_double),
-        ("u64", c_ulonglong),
+        ("f", c_double),
+        ("u", c_ulonglong),
     ]
 
 
 def val(x):
     """Return an integer valuation of float x"""
-    u = fu64(f64=x).u64
-    sign = (1 << 63)
+    u = word64(f=x).u
+    sign = 1 << 63
     if u < sign:
         return sign + u
     else:
