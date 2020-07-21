@@ -41,7 +41,6 @@ testdulp()
     /* nan, infinity */
     assert(dulp(NAN, NAN) == 0.);
     assert(dulp(INFINITY, INFINITY) == 0.);
-    assert(dulp(NAN, INFINITY) == dulp(-INFINITY, -NAN));
     assert(dulp(DBL_MAX, INFINITY) == 1.);
 }
 
