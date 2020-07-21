@@ -12,7 +12,6 @@ testval()
     assert(dulpval(-0.3) < dulpval(0.3));
     assert(dulpval(0.) < dulpval(1e-323));
     assert(dulpval(-INFINITY) < dulpval(INFINITY));
-    assert(dulpval(-NAN) < dulpval(NAN));
 }
 
 
@@ -53,7 +52,6 @@ testvalf()
     assert(dulpvalf(-0.3) < dulpvalf(0.3));
     assert(dulpvalf(0.) < dulpvalf(powf(2., -149.)));
     assert(dulpvalf(-INFINITY) < dulpvalf(INFINITY));
-    assert(dulpvalf(-NAN) < dulpvalf(NAN));
 }
 
 

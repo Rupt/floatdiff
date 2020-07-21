@@ -16,7 +16,6 @@ class testval(unittest.TestCase):
         self.assertLess(val(-0.3), val(0.3))
         self.assertLess(val(0.), val(1e-323))
         self.assertLess(val(-inf), val(inf))
-        self.assertLess(val(-nan), val(nan))
 
     def test_cast(self):
         self.assertEqual(val(0), val(0.))
