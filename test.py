@@ -22,6 +22,7 @@ class testval(unittest.TestCase):
         self.assertEqual(val(1), val(1.))
         self.assertEqual(val(-3), val(-3.))
         self.assertEqual(val(10**300), val(1e300))
+        self.assertNotEqual(val(-0), val(-0.))
 
     def test_type(self):
         self.assertIsInstance(val(0.7), int)
