@@ -52,7 +52,7 @@ def dif(vx, vy):
     elif utype is uint32:
         itype = int32
     else:
-        raise TypeError("must be uint64 or uint64, not %s" % vx.dtype)
+        raise TypeError("must be uint64 or uint32, not %s" % vx.dtype)
     
     if vx.ndim == 0:
         vx = utype(vx)
@@ -96,5 +96,5 @@ if __name__ == "__main__":
     print(d)
     print(dulp(1., 2.))
     print(dulp([[1.],[4.]], [[2.],[3.]]))
-    print(dif(uint32(1), uint64(2)))
+    #print(dif(uint32(1), uint64(2)))
     
