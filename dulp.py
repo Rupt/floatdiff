@@ -10,6 +10,9 @@ class word64(ctypes.Union):
 
 def val(x):
     """Return an integer valuation of float x"""
+    if not isinstance(x, float):
+        raise TypeError("must be float, not %s" % type(x))
+    
     u = word64(f=x).u
     sign = 1 << 63
     if u < sign:
@@ -20,4 +23,6 @@ def val(x):
 
 def dulp(x, y):
     """Return the order distance from x to y"""
-    return float(val(y) - val(x))
+    vx = val(x)
+    vy = val(y)
+    return float(vy - vx)

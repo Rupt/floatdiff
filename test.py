@@ -9,7 +9,6 @@ from dulp import val, dulp
 fmax = sys.float_info.max
 fmin = sys.float_info.min
 
-
 class testval(unittest.TestCase):
     def test_order(self):
         self.assertLess(val(0.5), val(0.7))
@@ -18,23 +17,26 @@ class testval(unittest.TestCase):
         self.assertLess(val(-inf), val(inf))
 
     def test_cast(self):
-        self.assertEqual(val(0), val(0.))
-        self.assertEqual(val(1), val(1.))
-        self.assertEqual(val(-3), val(-3.))
-        self.assertEqual(val(10**300), val(1e300))
-        self.assertNotEqual(val(-0), val(-0.))
+        with self.assertRaises(TypeError):
+            val(-0)
 
     def test_type(self):
         self.assertIsInstance(val(0.7), int)
+
+    def test_error(self):
+        with self.assertRaises(TypeError):
+            val(None)
+        with self.assertRaises(TypeError):
+            val(1j)
 
 
 class testdulp(unittest.TestCase):
     def test_increment(self):
         self.assertEqual(dulp(1., 1. + 2.**-52), 1.)
         self.assertEqual(dulp(1.5, 1.5 + 2.**-52), 1.)
-        
+
     def test_jump(self):
-        self.assertEqual(log2(dulp(1., 1.5)), 51.)
+        self.assertEqual(dulp(1., 1.5), 2.**51.)
 
     def test_antisym(self):
         self.assertEqual(dulp(.5, .7), -dulp(.7, .5))
