@@ -1,11 +1,10 @@
 """dulp measures order distances between floats"""
 import ctypes
-from ctypes import Union, c_double, c_ulonglong
 
-class word64(Union):
+class word64(ctypes.Union):
     _fields_ = [
-        ("f", c_double),
-        ("u", c_ulonglong),
+        ("f", ctypes.c_double),
+        ("u", ctypes.c_ulonglong),
     ]
 
 
