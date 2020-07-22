@@ -11,7 +11,7 @@ gcc bench.c \
 -pedantic \
 -Werror \
 -std=c99 \
--O2 \
+-O3 \
 -march=native \
 -o bench && perf record ./bench
 
@@ -25,14 +25,13 @@ clock_t
 test(double* restrict x,
      double* restrict y,
      float* restrict z,
-     size_t n,
-     float (*fp)(double, double))
+     size_t n)
 {
     clock_t start, end;
     start = clock();
     for (size_t i = 0; i < 500; ++i) {
         for (size_t j = 0; j < n; ++j) {
-            z[j] = (*fp)(x[j], y[j]);
+            z[j] = dulp(x[j], y[j]);
         }
         // prevent compiler reduction
         while(z[0] == 0.5) {
@@ -46,7 +45,7 @@ test(double* restrict x,
 
 
 void
-runtest(size_t n, float (*fp)(double, double))
+runtest(size_t n)
 {
     double* x;
     double* y;
@@ -55,18 +54,18 @@ runtest(size_t n, float (*fp)(double, double))
 
     x = (double*)malloc(n*sizeof(*x));
     for (size_t i = 0; i < n; ++i)
-        x[i] = (rand() + 0.5)/RAND_MAX - 0.5;
+        x[i] = (rand() + 0.5)/((uint64_t)RAND_MAX + 1) - 0.5;
     y = (double*)malloc(n*sizeof(*y));
     for (size_t i = 0; i < n; ++i)
-        y[i] = (rand() + 0.5)/RAND_MAX - 0.5;
+        y[i] = (rand() + 0.5)/((uint64_t)RAND_MAX + 1) - 0.5;
     z = (float*)malloc(n*sizeof(*z));
 
     printf("Running double test");
     clock_t res1;
-    res1 = test(x, y, z, n, fp);
+    res1 = test(x, y, z, n);
     printf("warmup took %ld clocks\n", res1);
     for (int i = 0; i < 3; ++i) {
-        res1 = test(x, y, z, n, fp);
+        res1 = test(x, y, z, n);
         printf("dulp  %ld clocks\n", res1);
         // prevent compiler reduction
         while(z[0] == 0.5) {}
@@ -82,14 +81,13 @@ clock_t
 testf(float* x,
       float* y,
       float* z,
-      size_t n,
-      float (*fp)(float, float))
+      size_t n)
 {
     clock_t start, end;
     start = clock();
     for (size_t i = 0; i < 500; ++i) {
         for (size_t j = 0; j < n; ++j) {
-            z[j] = (*fp)(x[j], y[j]);
+            z[j] = dulpf(x[j], y[j]);
         }
         // prevent compiler reduction
         while(z[0] == 0.5) {
@@ -103,25 +101,25 @@ testf(float* x,
 
 
 void
-runtestf(size_t n, float (*fp)(float, float))
+runtestf(size_t n)
 {
     float *x, *y, *z;
     srand(1234);
 
     x = (float*)malloc(n*sizeof(*x));
     for (size_t i = 0; i < n; ++i)
-        x[i] = (rand() + 0.5f)/RAND_MAX - 0.5f;
+        x[i] = (rand() + 0.5f)/((uint64_t)RAND_MAX + 1) - 0.5f;
     y = (float*)malloc(n*sizeof(*y));
     for (size_t i = 0; i < n; ++i)
-        x[i] = (rand() + 0.5f)/RAND_MAX - 0.5f;
+        x[i] = (rand() + 0.5f)/((uint64_t)RAND_MAX + 1) - 0.5f;
     z = (float*)malloc(n*sizeof(*z));
 
     puts("Running float test");
     clock_t res1;
-    res1 = testf(x, y, z, n, fp);
+    res1 = testf(x, y, z, n);
     printf("warmup took %ld clocks\n", res1);
     for (int i = 0; i < 3; ++i) {
-        res1 = testf(x, y, z, n, fp);
+        res1 = testf(x, y, z, n);
         printf("dulpf %ld clocks\n", res1);
         // prevent compiler reduction
         while(z[0] == 0.5) {}
@@ -137,6 +135,6 @@ runtestf(size_t n, float (*fp)(float, float))
 int
 main()
 {
-    runtest(1000*1000, &dulp);
-    runtestf(1000*1000, &dulpf);
+    runtest(1000*1000);
+    runtestf(1000*1000);
 }
