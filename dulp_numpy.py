@@ -10,6 +10,7 @@ from numpy import (
     float64, float32,
 )
 
+# TODO documentation
 # TODO tests
 
 def val(x):
@@ -29,23 +30,21 @@ def val(x):
         x = ftype(x)
 
     u = x.view(utype)
-    u = -(u >> shift) ^ (u | utype(1) << shift)
-
-    return u
+    return -(u >> shift) ^ (u | utype(1) << shift)
 
 
 def dif(vx, vy):
     vx = numpy.asanyarray(vx)
     vy = numpy.asanyarray(vy)
-    
+
     if vx.shape != vy.shape:
         shapes = (vx.shape, vy.shape)
         raise ValueError("vy vy have different shapes %s %s" % shapes)
-    
+
     if vx.dtype is not vy.dtype:
         types = (vx.dtype, vy.dtype)
         raise TypeError("vx vy have different types %s %s" % types)
-    
+
     utype = vx.dtype.type
     if utype is uint64:
         itype = int64
@@ -53,7 +52,7 @@ def dif(vx, vy):
         itype = int32
     else:
         raise TypeError("must be uint64 or uint32, not %s" % vx.dtype)
-    
+
     if vx.ndim == 0:
         vx = utype(vx)
         vy = utype(vy)
@@ -65,36 +64,23 @@ def dif(vx, vy):
     lo = (vy & one).astype(int32)
     lo -= (vx & one).astype(int32)
     lo = lo.astype(float32)
-
     return lo + 2.*hi
 
 
 def dulp(x, y):
+    x = numpy.asanyarray(x)
+    y = numpy.asanyarray(y)
+
+    if x.shape != y.shape:
+        shapes = (x.shape, y.shape)
+        raise ValueError("x y have different shapes %s %s" % shapes)
+
+    if x.dtype is not y.dtype:
+        types = (x.dtype, y.dtype)
+        raise TypeError("x y have different types %s %s" % types)
+
+    ftype = x.dtype.type
+    if ftype not in (float64, float32):
+        raise TypeError("must be float64 or float32, not %s" % ftype)
+
     return dif(val(x), val(y))
-    
-    
-
-
-
-ntest = 1000*1000
-numpy.random.seed(1234)
-testx = numpy.random.rand(ntest) - 0.5
-testy = numpy.random.rand(ntest) - 0.5
-
-def perf():
-    return dulp(testx, testy)
-
-
-if __name__ == "__main__":
-    x = numpy.array([1., numpy.nan, 1.])
-    y = numpy.array([1. + 2**-52, numpy.nan, 1.5])
-    vx = val(x)
-    vy = val(y)
-    print(vx)
-    print(vy)
-    d = dif(vx, vy)
-    print(d)
-    print(dulp(1., 2.))
-    print(dulp([[1.],[4.]], [[2.],[3.]]))
-    #print(dif(uint32(1), uint64(2)))
-    
