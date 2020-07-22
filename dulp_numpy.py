@@ -24,7 +24,7 @@ def val(x):
         utype = uint32
         shift = utype(31)
     else:
-        raise TypeError("must be float64 or float32, not %s" % x.dtype)
+        raise TypeError("%s not in (float64, float32)" % x.dtype)
 
     if x.ndim == 0:
         x = ftype(x)
@@ -37,13 +37,8 @@ def dif(vx, vy):
     vx = numpy.asanyarray(vx)
     vy = numpy.asanyarray(vy)
 
-    if vx.shape != vy.shape:
-        shapes = (vx.shape, vy.shape)
-        raise ValueError("vy vy have different shapes %s %s" % shapes)
-
     if vx.dtype is not vy.dtype:
-        types = (vx.dtype, vy.dtype)
-        raise TypeError("vx vy have different types %s %s" % types)
+        raise TypeError("%s is not %s" % (vx.dtype, vy.dtype))
 
     utype = vx.dtype.type
     if utype is uint64:
@@ -51,7 +46,7 @@ def dif(vx, vy):
     elif utype is uint32:
         itype = int32
     else:
-        raise TypeError("must be uint64 or uint32, not %s" % vx.dtype)
+        raise TypeError("%s not in (uint64, uint32)" % vx.dtype)
 
     if vx.ndim == 0:
         vx = utype(vx)
@@ -68,19 +63,6 @@ def dif(vx, vy):
 
 
 def dulp(x, y):
-    x = numpy.asanyarray(x)
-    y = numpy.asanyarray(y)
-
-    if x.shape != y.shape:
-        shapes = (x.shape, y.shape)
-        raise ValueError("x y have different shapes %s %s" % shapes)
-
-    if x.dtype is not y.dtype:
-        types = (x.dtype, y.dtype)
-        raise TypeError("x y have different types %s %s" % types)
-
-    ftype = x.dtype.type
-    if ftype not in (float64, float32):
-        raise TypeError("must be float64 or float32, not %s" % ftype)
-
-    return dif(val(x), val(y))
+    vx = val(x)
+    vy = val(y)
+    return dif(vx, vy)
