@@ -28,9 +28,7 @@ def dulp(x, y):
     else:
         raise TypeError("%s not in (float64, float32)" % x.dtype)
 
-    if r.ndim == 0:
-        r = r.dtype.type(x)
-    return r
+    return _un0d(r)
 
 
 def val(x):
@@ -43,9 +41,7 @@ def val(x):
     else:
         raise TypeError("%s not in (float64, float32)" % x.dtype)
 
-    if r.ndim == 0:
-        r = r.dtype.type(x)
-    return r
+    return _un0d(r)
 
 
 def dif(vx, vy):
@@ -62,9 +58,7 @@ def dif(vx, vy):
     else:
         raise TypeError("%s not in (uint64, uint32)" % vx.dtype)
 
-    if r.ndim == 0:
-        r = r.dtype.type(x)
-    return r
+    return _un0d(r)
 
 
 def _dulp(x, y):
@@ -112,3 +106,9 @@ def _diff(vx, vy):
     r = vx.astype(int64)
     r -= vy.astype(int64)
     return r.astype(float32)
+
+
+def _un0d(x):
+    if x.ndim == 0:
+        x = x.dtype.type(x)
+    return x
