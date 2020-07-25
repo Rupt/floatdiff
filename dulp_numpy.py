@@ -68,8 +68,8 @@ def _dulp(x, y):
 
 
 def _val(x):
-    u = x.view(int64)
     shift = int64(63)
+    u = x.view(int64)
     r = (u >> shift)
     r |= (int64(1) << shift)
     r ^= u
@@ -94,8 +94,8 @@ def _dulpf(x, y):
 
 
 def _valf(x):
-    u = x.view(int32)
     shift = int32(31)
+    u = x.view(int32)
     r = (u >> shift)
     r |= (int32(1) << shift)
     r ^= u
