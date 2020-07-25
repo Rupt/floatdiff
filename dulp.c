@@ -52,16 +52,15 @@ dulp(double x, double y)
     return dulpdif(vx, vy);
 }
 
+
 uint64_t
 dulpval(double x)
 {
     union dulpw64 w;
-    uint64_t v;
     w.f = x;
-    v = -(w.u >> 63);
-    v ^= (w.u | (uint64_t)1 << 63);
-    return v;
+    return -(w.u >> 63) ^ (w.u | (uint64_t)1 << 63);
 }
+
 
 float
 dulpdif(uint64_t vx, uint64_t vy)
@@ -82,19 +81,42 @@ dulpf(float x, float y)
     return dulpdiff(vx, vy);
 }
 
+
 uint32_t
 dulpvalf(float x)
 {
     union dulpw32 w;
-    uint32_t v;
     w.f = x;
-    v = -(w.u >> 31);
-    v ^= (w.u | (uint32_t)1 << 31);
-    return v;
+    return -(w.u >> 31) ^ (w.u | (uint32_t)1 << 31);
 }
+
 
 float
 dulpdiff(uint32_t vx, uint32_t vy)
 {
     return (int64_t)vy - (int64_t)vx;
+}
+
+
+float
+dulpl(long double x, long double y)
+{
+    struct dulps80 vx, vy;
+    vx = dulpvall(x);
+    vy = dulpvall(y);
+    return dulpdifl(vx, vy);
+}
+
+
+struct dulps80
+dulpvall(long double x)
+{
+    return (struct dulps80){0, 0};
+}
+
+
+float
+dulpdifl(struct dulps80 vx, struct dulps80 vy)
+{
+    return 0.f;
 }
