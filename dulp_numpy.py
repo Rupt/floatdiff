@@ -57,7 +57,7 @@ def dif(vx, vy):
     else:
         raise TypeError("%s not in (uint64, uint32)" % vx.dtype)
 
-    return _un0d(cdif(vx, vy)
+    return _un0d(cdif(vx, vy))
 
 
 
