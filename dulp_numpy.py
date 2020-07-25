@@ -103,8 +103,8 @@ def _valf(x):
 
 
 def _diff(vx, vy):
-    r = vx.astype(int64)
-    r -= vy.astype(int64)
+    r = vy.astype(int64)
+    r -= vx.astype(int64)
     return r.astype(float32)
 
 
