@@ -4,17 +4,8 @@
 #include <stdint.h>
 #include "dulp.c"
 
-void
-testval()
-{
-    /* order */
-    assert(dulpval(0.5) < dulpval(0.7));
-    assert(dulpval(-0.3) < dulpval(0.3));
-    assert(dulpval(0.) < dulpval(1e-323));
-    assert(dulpval(-INFINITY) < dulpval(INFINITY));
-}
-
-
+// TODO remove header dependencies
+// TODO passert macro (pass warning)
 void
 testdulp()
 {
@@ -45,13 +36,13 @@ testdulp()
 
 
 void
-testvalf()
+testval()
 {
     /* order */
-    assert(dulpvalf(0.5) < dulpvalf(0.7));
-    assert(dulpvalf(-0.3) < dulpvalf(0.3));
-    assert(dulpvalf(0.) < dulpvalf(powf(2., -149.)));
-    assert(dulpvalf(-INFINITY) < dulpvalf(INFINITY));
+    assert(dulpval(0.5) < dulpval(0.7));
+    assert(dulpval(-0.3) < dulpval(0.3));
+    assert(dulpval(0.) < dulpval(1e-323));
+    assert(dulpval(-INFINITY) < dulpval(INFINITY));
 }
 
 
@@ -59,8 +50,8 @@ void
 testdulpf()
 {
     /* increment */
-    assert(dulpf(1., 1. + powf(2., -23.)) == 1.);
-    assert(dulpf(1.5, 1.5 + powf(2., -23.)) == 1.);
+    assert(dulpf(1, 1 + powf(2, -23)) == 1);
+    assert(dulpf(1.5, 1.5 + powf(2, -23)) == 1);
     
     /* jump */
     assert(log2f(dulpf(1., 1.5)) == 22.);
@@ -83,6 +74,16 @@ testdulpf()
     assert(dulpf(FLT_MAX, INFINITY) == 1.);
 }
 
+
+void
+testvalf()
+{
+    /* order */
+    assert(dulpvalf(0.5) < dulpvalf(0.7));
+    assert(dulpvalf(-0.3) < dulpvalf(0.3));
+    assert(dulpvalf(0) < dulpvalf(powf(2, -149)));
+    assert(dulpvalf(-INFINITY) < dulpvalf(INFINITY));
+}
 
 int main() {
     testval();
