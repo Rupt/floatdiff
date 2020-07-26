@@ -31,18 +31,17 @@ testdulp()
     assert(dulp(5e-324, 1e-323) == 1.);
     assert(dulp(DBL_MIN - 5e-324, DBL_MIN) == 1.);
     assert(dulp(-0., 0.) == 1.);
+    assert(dulp(DBL_MAX, INFINITY) == 1.);
     
     /* jump */
     assert(dulp(1., 1.5) == pow2(51));
 
-    /* antisym */
+    /* antisymmetry */
     assert(dulp(.5, .7) == -dulp(.7, .5));
     assert(dulp(.5, .7) == -dulp(-.5, -.7));
 
-    /* nan, infinity */
+    /* nan */
     assert(dulp(NAN, NAN) == 0.);
-    assert(dulp(INFINITY, INFINITY) == 0.);
-    assert(dulp(DBL_MAX, INFINITY) == 1.);
 }
 
 
@@ -63,26 +62,21 @@ testdulpf()
     /* increment */
     assert(dulpf(1. - pow2(-24), 1) == 1);
     assert(dulpf(1.5, 1.5 + pow2(-23)) == 1);
+    assert(dulpf(0., 1e-45) == 1.);
+    assert(dulpf(1e-45, 3e-45) == 1.);
+    assert(dulpf(FLT_MIN - 1e-45, FLT_MIN) == 1.);
+    assert(dulpf(-0., 0.) == 1.);
+    assert(dulpf(FLT_MAX, INFINITY) == 1.);
     
     /* jump */
     assert(dulpf(1., 1.5) == pow2(22));
 
-    /* antisym */
+    /* antisymmetry */
     assert(dulpf(.5, .7) == -dulpf(.7, .5));
     assert(dulpf(.5, .7) == -dulpf(-.5, -.7));
 
-    /* zero */
-    assert(dulpf(-0., 0.) == 1.);
-
-    /* denormal */
-    assert(dulpf(0., 1e-45) == 1.);
-    assert(dulpf(1e-45, 3e-45) == 1.);
-    assert(dulpf(FLT_MIN - 1e-45, FLT_MIN) == 1.);
-
-    /* nan, infinity */
+    /* nan */
     assert(dulpf(NAN, NAN) == 0.);
-    assert(dulpf(INFINITY, INFINITY) == 0.);
-    assert(dulpf(FLT_MAX, INFINITY) == 1.);
 }
 
 
