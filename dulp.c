@@ -8,7 +8,6 @@ stdint.h
 
 */
 
-
 float dulp(double x, double y);
 float dulpf(float x, float y);
 
@@ -63,7 +62,7 @@ dulpdif(uint64_t vx, uint64_t vy)
     float lo, hi;
     hi = (int64_t)(vy >> 1) - (int64_t)(vx >> 1);
     lo = (int)(vy & 1) - (int)(vx & 1);
-    return hi + hi + lo;
+    return 2*hi + lo;
 }
 
 
