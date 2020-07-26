@@ -6,7 +6,7 @@ python -m timeit -vv -s "from dulp_numpy import perf" "perf()"
 """
 import numpy
 
-from numpy import asanyarray
+from numpy import array, asanyarray
 from numpy import float32, float64
 from numpy import int32, int64
 from numpy import uint32, uint64
@@ -28,7 +28,7 @@ def dulp(x, y):
     else:
         raise TypeError("%s not in (float64, float32)" % x.dtype)
 
-    return _un0d(r)
+    return r
 
 
 def val(x):
@@ -41,7 +41,7 @@ def val(x):
     else:
         raise TypeError("%s not in (float64, float32)" % x.dtype)
 
-    return _un0d(r)
+    return r
 
 
 def dif(vx, vy):
@@ -58,7 +58,7 @@ def dif(vx, vy):
     else:
         raise TypeError("%s not in (uint64, uint32)" % vx.dtype)
 
-    return _un0d(r)
+    return r
 
 
 def _dulp(x, y):
@@ -104,11 +104,5 @@ def _valf(x):
 
 def _diff(vx, vy):
     r = vy.astype(int64)
-    r -= vx.astype(int64)
+    r -= vx
     return r.astype(float32)
-
-
-def _un0d(x):
-    if x.ndim == 0:
-        x = x.dtype.type(x)
-    return x
