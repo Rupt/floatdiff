@@ -2,12 +2,14 @@
 #include <stdint.h>
 #include "dulp.c"
 
+
 #define INFINITY 1./0.
 #define NAN 0./0.
 #define DBL_MAX 1.7976931348623157e+308
 #define DBL_MIN 2.2250738585072014e-308
 #define FLT_MAX 3.4028235e+38f
 #define FLT_MIN 1.1754944e-38f
+
 
 /* fun local 2**x for |x| <= 1023 */
 double
@@ -25,6 +27,10 @@ testdulp()
     /* increment */
     assert(dulp(1. - pow2(-53), 1.) == 1.);
     assert(dulp(1.5, 1.5 + pow2(-52)) == 1.);
+    assert(dulp(0., 5e-324) == 1.);
+    assert(dulp(5e-324, 1e-323) == 1.);
+    assert(dulp(DBL_MIN - 5e-324, DBL_MIN) == 1.);
+    assert(dulp(-0., 0.) == 1.);
     
     /* jump */
     assert(dulp(1., 1.5) == pow2(51));
@@ -32,14 +38,6 @@ testdulp()
     /* antisym */
     assert(dulp(.5, .7) == -dulp(.7, .5));
     assert(dulp(.5, .7) == -dulp(-.5, -.7));
-
-    /* zero */
-    assert(dulp(-0., 0.) == 1.);
-
-    /* denormal */
-    assert(dulp(0., 5e-324) == 1.);
-    assert(dulp(5e-324, 1e-323) == 1.);
-    assert(dulp(DBL_MIN - 5e-324, DBL_MIN) == 1.);
 
     /* nan, infinity */
     assert(dulp(NAN, NAN) == 0.);
