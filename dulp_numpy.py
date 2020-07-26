@@ -1,18 +1,16 @@
 """
+TODO documentation
 
 python -m timeit -vv -s "from dulp_numpy import perf" "perf()"
 
 
 """
 import numpy
-
 from numpy import array, asanyarray
 from numpy import float32, float64
 from numpy import int32, int64
 from numpy import uint32, uint64
 
-# TODO documentation
-# TODO tests
 
 def dulp(x, y):
     x = asanyarray(x)
@@ -67,13 +65,28 @@ def _dulp(x, y):
     return _dif(vx, vy)
 
 
+def _dulpf(x, y):
+    vx = _valf(x)
+    vy = _valf(y)
+    return _diff(vx, vy)
+
+
 def _val(x):
     shift = int64(63)
     u = x.view(int64)
-    r = (u >> shift)
-    r |= (int64(1) << shift)
+    r = u >> shift
+    r |= int64(1) << shift
     r ^= u
     return r.view(uint64)
+
+
+def _valf(x):
+    shift = int32(31)
+    u = x.view(int32)
+    r = u >> shift
+    r |= int32(1) << shift
+    r ^= u
+    return r.view(uint32)
 
 
 def _dif(vx, vy):
@@ -85,21 +98,6 @@ def _dif(vx, vy):
     lo -= (vx & one).view(int64)
     lo = lo.astype(float32)
     return float32(2)*hi + lo
-
-
-def _dulpf(x, y):
-    vx = _valf(x)
-    vy = _valf(y)
-    return _diff(vx, vy)
-
-
-def _valf(x):
-    shift = int32(31)
-    u = x.view(int32)
-    r = (u >> shift)
-    r |= (int32(1) << shift)
-    r ^= u
-    return r.view(uint32)
 
 
 def _diff(vx, vy):
