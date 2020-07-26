@@ -5,7 +5,6 @@ python -m timeit -vv -s "from dulp_numpy import perf" "perf()"
 
 
 """
-import numpy
 from numpy import array, asanyarray
 from numpy import float32, float64
 from numpy import int32, int64

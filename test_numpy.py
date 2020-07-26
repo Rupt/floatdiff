@@ -6,21 +6,19 @@ python test_numpy.py
 """
 import unittest
 
-import numpy
 from numpy import ndarray
 from numpy import float32, float64
 from numpy import uint32, uint64
 from numpy import inf, nan
 
-import dulp_numpy
 from dulp_numpy import dulp, val, dif
 
 f64max = numpy.finfo(float64).max
 f64min = numpy.finfo(float64).tiny
 f32max = numpy.finfo(float32).max
 f32min = numpy.finfo(float32).tiny
-u64max = uint64(2**64 - 1)
-u32max = uint32(2**32 - 1)
+u64max = numpy.iinfo(uint64).max
+u32max = numpy.iinfo(uint32).max
 
 
 class testdulp(unittest.TestCase):

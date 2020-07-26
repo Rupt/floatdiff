@@ -1,9 +1,7 @@
-import math
-from math import nan, inf
+from math import inf, nan
 import unittest
 import sys
 
-import dulp
 from dulp import dulp, val
 
 f64max = sys.float_info.max

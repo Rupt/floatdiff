@@ -4,7 +4,7 @@ TODO explanation
 
 Assumed context:
 stdint.h
-    uint64_t int64_t uint32_t int32_t
+    int32_t int64_t uint32_t uint64_t
 
 */
 
