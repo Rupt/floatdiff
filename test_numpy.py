@@ -36,7 +36,7 @@ class testdulp(unittest.TestCase):
         with self.assertRaises(TypeError):
             dulp(0, 5e-324)
 
-    def test_add64(self):
+    def test_increment(self):
         self.assertEqual(dulp(1. - 2**-53, 1.), 1.)
         self.assertEqual(dulp(1.5, 1.5 + 2**-52), 1.)
         self.assertEqual(dulp(0., 5e-324), 1.)
@@ -45,19 +45,19 @@ class testdulp(unittest.TestCase):
         self.assertEqual(dulp(-0., 0.), 1.)
         self.assertEqual(dulp(f64max, inf), 1.)
 
-    def test_jump64(self):
+    def test_jump(self):
         self.assertEqual(dulp(1., 1.5), 2**51.)
 
-    def test_asym64(self):
+    def test_asym(self):
         self.assertEqual(dulp(.5, .7), -dulp(.7, .5))
         self.assertEqual(dulp(.5, .7), -dulp(-.5, -.7))
 
-    def test_naninf64(self):
+    def test_naninf(self):
         self.assertEqual(dulp(nan, nan), 0.)
         self.assertEqual(dulp(inf, inf), 0.)
         self.assertEqual(dulp(f64max, inf), 1.)
 
-    def test_broadcast64(self):
+    def test_broadcast(self):
         vec = dulp(.5, [.7]*2)
         mat = dulp(.5, .5*numpy.ones((1, 2, 3)))
         self.assertEqual(vec.shape, (2,))
@@ -67,7 +67,7 @@ class testdulp(unittest.TestCase):
         with self.assertRaises(ValueError):
             dulp(vec, mat)
 
-    def test_add32(self):
+    def test_incrementf(self):
         self.assertEqual(dulp(float32(1. - 2**-24), float32(1.)), 1.)
         self.assertEqual(dulp(float32(1.5), float32(1.5 + 2**-23)), 1.)
         self.assertEqual(dulp(float32(0.), float32(1e-45)), 1.)
@@ -76,19 +76,19 @@ class testdulp(unittest.TestCase):
         self.assertEqual(dulp(-float32(0.), float32(0.)), 1.)
         self.assertEqual(dulp(f32max, float32(inf)), 1.)
 
-    def test_jump32(self):
+    def test_jumpf(self):
         self.assertEqual(dulp(float32(1.), float32(1.5)), 2**22.)
 
-    def test_asym32(self):
+    def test_asymf(self):
         self.assertEqual(dulp(float32(.5), float32(.7)),
                          -dulp(float32(.7), float32(.5)))
         self.assertEqual(dulp(float32(.5), float32(.7)),
                          -dulp(-float32(.5), -float32(.7)))
 
-    def test_nan32(self):
+    def test_nanf(self):
         self.assertEqual(dulp(float32(nan), float32(nan)), 0.)
 
-    def test_broadcast32(self):
+    def test_broadcastf(self):
         vec = dulp(.5, [.7]*2)
         mat = dulp(.5, .5*numpy.ones((1, 2, 3)))
         self.assertEqual(vec.shape, (2,))
@@ -107,13 +107,13 @@ class testval(unittest.TestCase):
         with self.assertRaises(TypeError):
             val(-0)
 
-    def test_ord64(self):
+    def test_ord(self):
         self.assertLess(val(.5), val(.7))
         self.assertLess(val(-.3), val(.3))
         self.assertLess(val(0.), val(1e-323))
         self.assertLess(val(-inf), val(inf))
 
-    def test_ord32(self):
+    def test_ordf(self):
         self.assertLess(val(float32(.5)), val(float32(.7)))
         self.assertLess(val(-float32(.3)), val(float32(.3)))
         self.assertLess(val(0.), val(1e-45))
@@ -127,14 +127,14 @@ class testdif(unittest.TestCase):
         with self.assertRaises(TypeError):
             dif(1, 2)
 
-    def test_dif64(self):
+    def test_dif(self):
         self.assertEqual(dif(uint64(0), uint64(1)), 1)
         self.assertEqual(dif(uint64(0), u64max), float32(u64max))
         self.assertEqual(dif(u64max, uint64(0)), -float32(u64max))
         self.assertEqual(dif(uint64(1), uint64(2**24 + 1)),
                          dif(uint64(0), uint64(2**24)))
 
-    def test_dif32(self):
+    def test_diff(self):
         self.assertEqual(dif(uint32(0), uint32(1)), 1)
         self.assertEqual(dif(uint32(0), u32max), float32(u32max))
         self.assertEqual(dif(u32max, uint32(0)), -float32(u32max))
