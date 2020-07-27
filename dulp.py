@@ -23,6 +23,8 @@ def val(x):
     u = w64(f=x).u
     sign = 1 << 63
     if u < sign:
-        return sign + u
+        r = sign + u
     else:
-        return 2*sign - 1 - u
+        r = 2*sign - 1 - u
+    
+    return r
