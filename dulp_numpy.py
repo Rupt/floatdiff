@@ -72,6 +72,7 @@ def _dulpf(x, y):
 
 def _val(x):
     shift = int64(63)
+    sign = int64(1) << shift
     u = x.view(int64)
     r = u >> shift
     r |= int64(1) << shift
@@ -89,17 +90,16 @@ def _valf(x):
 
 
 def _dif(vx, vy):
-    one = uint64(1)
-    hi = (vy >> one).view(int64)
-    hi -= (vx >> one).view(int64)
-    hi = hi.astype(float32)
-    lo = (vy & one).astype(int32)
-    lo -= (vx & one).view(int64)
-    lo = lo.astype(float32)
-    return float32(2)*hi + lo
+    shift = uint64(32)
+    mask = (uint64(1) << shift) - uint64(1)
+    scale = float64(mask + 1)
+    hi = (vy >> shift).view(int64)
+    hi -= (vx >> shift).view(int64)
+    lo = (vy & mask).view(int64)
+    lo -= (vx & mask).view(int64)
+    return scale*hi + lo
 
 
 def _diff(vx, vy):
-    r = vy.astype(int64)
-    r -= vx
-    return r.astype(float32)
+    r = vy.astype(int64) - vx.astype(int64)
+    return r.astype(float64)

@@ -8,17 +8,17 @@ stdint.h
 
 */
 
-float dulp(double x, double y);
-float dulpf(float x, float y);
+double dulp(double x, double y);
+double dulpf(float x, float y);
 
 uint64_t dulpval(double x);
 uint32_t dulpvalf(float x);
 
-float dulpdif(uint64_t vx, uint64_t vy);
-float dulpdiff(uint32_t vx, uint32_t vy);
+double dulpdif(uint64_t vx, uint64_t vy);
+double dulpdiff(uint32_t vx, uint32_t vy);
 
 
-float
+double
 dulp(double x, double y)
 {
     uint64_t vx, vy;
@@ -28,7 +28,7 @@ dulp(double x, double y)
 }
 
 
-float
+double
 dulpf(float x, float y)
 {
     uint32_t vx, vy;
@@ -56,17 +56,20 @@ dulpvalf(float x)
 }
 
 
-float
+double
 dulpdif(uint64_t vx, uint64_t vy)
 {
-    float lo, hi;
-    hi = (int64_t)(vy >> 1) - (int64_t)(vx >> 1);
-    lo = (int)(vy & 1) - (int)(vx & 1);
-    return 2*hi + lo;
+    const uint64_t shift = 32;
+    const uint64_t mask = ((uint64_t)1 << shift) - 1;
+    const double scale = mask + 1;
+    int64_t hi, lo;
+    hi = (vy >> shift) - (vx >> shift);
+    lo = (vy & mask) - (vx & mask);
+    return scale*hi + lo;
 }
 
 
-float
+double
 dulpdiff(uint32_t vx, uint32_t vy)
 {
     return (int64_t)vy - (int64_t)vx;
