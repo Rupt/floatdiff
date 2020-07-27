@@ -5,6 +5,9 @@ TODO explanation
 Assumed context:
 stdint.h
     int32_t int64_t uint32_t uint64_t
+    
+math.h
+    log2
 
 */
 
@@ -41,18 +44,18 @@ dulpf(float x, float y)
 uint64_t
 dulpval(double x)
 {
-    union {double f; uint64_t u;} w;
-    w.f = x;
-    return -(w.u >> 63) ^ (w.u | (uint64_t)1 << 63);
+    union {double f8; uint64_t u8;} word;
+    word.f8 = x;
+    return -(word.u8 >> 63) ^ (word.u8 | (uint64_t)1 << 63);
 }
 
 
 uint32_t
 dulpvalf(float x)
 {
-    union {float f; uint32_t u;} w;
-    w.f = x;
-    return -(w.u >> 31) ^ (w.u | (uint32_t)1 << 31);
+    union {float f4; uint32_t u4;} word;
+    word.f4 = x;
+    return -(word.u4 >> 31) ^ (word.u4 | (uint32_t)1 << 31);
 }
 
 
