@@ -6,10 +6,10 @@ python test_numpy.py
 """
 import unittest
 
-from numpy import ndarray
+import numpy
+from numpy import inf, nan
 from numpy import float32, float64
 from numpy import uint32, uint64
-from numpy import inf, nan
 
 from dulp_numpy import dulp, val, dif
 
@@ -17,16 +17,16 @@ f64max = numpy.finfo(float64).max
 f64min = numpy.finfo(float64).tiny
 f32max = numpy.finfo(float32).max
 f32min = numpy.finfo(float32).tiny
-u64max = numpy.iinfo(uint64).max
-u32max = numpy.iinfo(uint32).max
+u64max = uint64(numpy.iinfo(uint64).max)
+u32max = uint32(numpy.iinfo(uint32).max)
 
-
-class testdulp(unittest.TestCase):
+            
+class TestDulp(unittest.TestCase):
     def test_type(self):
-        self.assertIs(dulp(.5, .7).dtype.type, float32)
-        self.assertIs(dulp(float32(.5), float32(.7)).dtype.type, float32)
-        self.assertIsInstance(dulp([.5], [.7]), ndarray)
-        self.assertIsInstance(dulp([float32(.5)], [float32(.7)]), ndarray)
+        self.assertIs(dulp(.5, .7).dtype.type, float64)
+        self.assertIsInstance(dulp([.5], [.7]), numpy.ndarray)
+        self.assertIs(dulp(float32(.5), float32(.7)).dtype.type, float64)
+        self.assertIsInstance(dulp([float32(.5)], [float32(.7)]), numpy.ndarray)
         with self.assertRaises(TypeError):
             dulp(float32(1), float64(0.5))
         with self.assertRaises(TypeError):
@@ -96,12 +96,12 @@ class testdulp(unittest.TestCase):
             dulp(vec, mat)
 
 
-class testval(unittest.TestCase):
+class TestVal(unittest.TestCase):
     def test_type(self):
         self.assertIs(val(.7).dtype.type, uint64)
-        self.assertIsInstance(val([.7]), ndarray)
+        self.assertIsInstance(val([.7]), numpy.ndarray)
         self.assertIs(val(float32(.7)).dtype.type, uint32)
-        self.assertIsInstance(val([float32(.7)]), ndarray)
+        self.assertIsInstance(val([float32(.7)]), numpy.ndarray)
         with self.assertRaises(TypeError):
             val(-0)
 
@@ -118,7 +118,7 @@ class testval(unittest.TestCase):
         self.assertLess(val(-float32(inf)), val(float32(inf)))
 
 
-class testdif(unittest.TestCase):
+class TestDif(unittest.TestCase):
     def test_type(self):
         with self.assertRaises(TypeError):
             dif(uint32(1), uint64(1))
@@ -127,17 +127,13 @@ class testdif(unittest.TestCase):
 
     def test_dif(self):
         self.assertEqual(dif(uint64(0), uint64(1)), 1)
-        self.assertEqual(dif(uint64(0), u64max), float32(u64max))
-        self.assertEqual(dif(u64max, uint64(0)), -float32(u64max))
-        self.assertEqual(dif(uint64(1), uint64(2**24 + 1)),
-                         dif(uint64(0), uint64(2**24)))
+        self.assertEqual(dif(uint64(0), u64max), float64(u64max))
+        self.assertEqual(dif(u64max, uint64(0)), -float64(u64max))
 
     def test_diff(self):
         self.assertEqual(dif(uint32(0), uint32(1)), 1)
-        self.assertEqual(dif(uint32(0), u32max), float32(u32max))
-        self.assertEqual(dif(u32max, uint32(0)), -float32(u32max))
-        self.assertEqual(dif(uint32(1), uint32(2**24 + 1)),
-                         dif(uint32(0), uint32(2**24)))
+        self.assertEqual(dif(uint32(0), u32max), float64(u32max))
+        self.assertEqual(dif(u32max, uint32(0)), -float64(u32max))
 
 
 if __name__ == "__main__":

@@ -8,7 +8,7 @@ f64max = sys.float_info.max
 f64min = sys.float_info.min
 
 
-class testdulp(unittest.TestCase):
+class TestDulp(unittest.TestCase):
     def test_increment(self):
         self.assertEqual(dulp(1., 1. + 2**-52), 1.)
         self.assertEqual(dulp(1.5, 1.5 + 2**-52), 1.)
@@ -32,7 +32,7 @@ class testdulp(unittest.TestCase):
         self.assertIsInstance(dulp(.5, .7), float)
 
 
-class testval(unittest.TestCase):
+class TestVal(unittest.TestCase):
     def test_order(self):
         self.assertLess(val(.5), val(.7))
         self.assertLess(val(-.3), val(.3))
