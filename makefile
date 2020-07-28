@@ -1,20 +1,48 @@
 CC=gcc
 CFLAGS=-Wall -Wextra -pedantic -Werror -std=c89
 LDFLAGS=-lm
+PYLINTFLAGS=--exit-zero --score n
 
-test-exe: test.c
-	$(CC) -o $@ $^ $(CFLAGS) $(LDFLAGS)
+
+clean:
+	rm -f *.pyc *.o test-c
+
 
 test-py:
 	python test.py
 
+
 test-numpy:
 	python test_numpy.py
 
-test-c: test-exe
-	./test-exe
 
-clean:
-	rm -f *.pyc *.o run_test
+test-c: test.c
+	$(CC) -o $@ $^ $(CFLAGS) $(LDFLAGS)
+	./$@
 
-.PHONY: test-py test-numpy test-c clean
+
+test: test-c test-py test-numpy
+
+
+lint:
+	pylint dulp.py $(PYLINTFLAGS)
+	pylint dulp_numpy.py $(PYLINTFLAGS)
+	pylint test.py $(PYLINTFLAGS)
+	pylint test_numpy.py $(PYLINTFLAGS)
+
+
+bench-numpy:
+	python -m timeit -vv -s "from bench_numpy import bench" "bench()"
+
+
+bench-numpyf:
+	python -m timeit -vv -s "from bench_numpy import benchf" "benchf()"
+
+
+bench: bench-numpy bench-numpyf
+
+
+.PHONY: clean \
+		test-py test-numpy test-c test \
+		lint \
+		bench-numpy bench-numpyf bench
