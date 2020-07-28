@@ -6,7 +6,7 @@ python -m timeit -vv -s "from dulp_numpy import perf" "perf()"
 
 """
 from numpy import asanyarray
-from numpy import abs as fabs
+from numpy import absolute
 from numpy import log2
 from numpy import float32, float64
 from numpy import int32, int64
@@ -71,10 +71,20 @@ def dif(vx, vy):
 
     return delta
 
+
 def bits(d):
-    """Return a bits-like transform of difference (array) d."""
+    """Return a bits-like transform of difference (array) d.
+    
+    The form log2(|delta| + 1) satisfies
+        bits(0) == 0
+        bits(1) == 1
+        bits(0b111) == 3               (0b111 == 7)
+    with interpolation such that
+        3 < bits(0b1000) < 4          (0b1000 == 8)
+    and so on.
+    """
     d = asanyarray(d)
-    return log2(fabs(d) + 1.)
+    return log2(absolute(d) + 1.)
 
 
 def _dulp(x, y):

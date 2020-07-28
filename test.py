@@ -57,7 +57,7 @@ class TestDif(unittest.TestCase):
 
 class TestBits(unittest.TestCase):
     def test_type(self):
-        self.assertIsInstance(bits(2.7), float)
+        self.assertIsInstance(bits(5.), float)
 
     def test_bits(self):
         self.assertEqual(bits(0.), 0.)

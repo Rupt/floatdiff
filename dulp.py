@@ -20,7 +20,7 @@ def dulp(x, y):
 
 def dif(vx, vy):
     """Return the difference of valuations vx and vy.
-    
+
     Trivial, but included for internal consistency.
     """
     return float(vy - vx)
@@ -41,7 +41,7 @@ def val(x):
 
 def bits(delta):
     """Return a bits-like transform of difference d.
-    
+
     The form log2(|delta| + 1) satisfies
         bits(0) == 0
         bits(1) == 1

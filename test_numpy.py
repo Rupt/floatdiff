@@ -129,8 +129,8 @@ class TestDif(unittest.TestCase):
 
 class TestBits(unittest.TestCase):
     def test_type(self):
-        self.assertIs(bits(2.7).dtype.type, float64)
-        self.assertIsInstance(bits([2.7]), numpy.ndarray)
+        self.assertIs(bits(5.).dtype.type, float64)
+        self.assertIsInstance(bits([5., 8.]), numpy.ndarray)
 
     def test_bits(self):
         self.assertEqual(bits(0.), 0.)
