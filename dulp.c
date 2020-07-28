@@ -1,15 +1,17 @@
 /* dulp measures order distances between floating point numbers
-
-TODO explanation
-
-Assumed context:
-stdint.h
-    int32_t int64_t uint32_t uint64_t
-    
-math.h
-    log2
-
-*/
+ * 
+ * 
+ * TODO explanation
+ * 
+ * Assumed context:
+ * 
+ * math.h
+ *     log2
+ * 
+ * stdint.h
+ *     int32_t int64_t uint32_t uint64_t
+ * 
+ */
 
 double dulp(double x, double y);
 double dulpf(float x, float y);
@@ -19,6 +21,8 @@ uint32_t dulpvalf(float x);
 
 double dulpdif(uint64_t vx, uint64_t vy);
 double dulpdiff(uint32_t vx, uint32_t vy);
+
+double dulpbits(double d);
 
 
 double
@@ -76,4 +80,10 @@ double
 dulpdiff(uint32_t vx, uint32_t vy)
 {
     return (int64_t)vy - (int64_t)vx;
+}
+
+
+double dulpbits(double d)
+{
+    return log2(fabs(d) + 1.);
 }

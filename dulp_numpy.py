@@ -5,7 +5,9 @@ python -m timeit -vv -s "from dulp_numpy import perf" "perf()"
 
 
 """
-from numpy import array, asanyarray
+from numpy import asanyarray
+from numpy import abs as fabs
+from numpy import log2
 from numpy import float32, float64
 from numpy import int32, int64
 from numpy import uint32, uint64
@@ -13,7 +15,7 @@ from numpy import uint32, uint64
 
 def dulp(x, y):
     """Return the (broadcasted) order difference from x to y.
-    
+
     Inputs x and y must be both float32 or both float64.
     """
     x = asanyarray(x)
@@ -34,7 +36,7 @@ def dulp(x, y):
 
 def val(x):
     """Return an integer (broadcasted) valuation of x.
-    
+
     Input x must be float32 or float64.
     """
     x = asanyarray(x)
@@ -51,7 +53,7 @@ def val(x):
 
 def dif(vx, vy):
     """Return the (broadcasted) difference of valuations vx and vy.
-    
+
     Inputs vx and vy must be uint32 or uint64, as returned by val(x).
     """
     vx = asanyarray(vx)
@@ -68,6 +70,11 @@ def dif(vx, vy):
         raise TypeError("%s not in (uint64, uint32)" % vx.dtype)
 
     return delta
+
+def bits(d):
+    """Return a bits-like transform of difference (array) d."""
+    d = asanyarray(d)
+    return log2(fabs(d) + 1.)
 
 
 def _dulp(x, y):

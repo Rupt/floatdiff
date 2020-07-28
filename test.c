@@ -1,15 +1,8 @@
 #include <assert.h>
-#include <stdint.h>
+#include <float.h>
 #include <math.h>
+#include <stdint.h>
 #include "dulp.c"
-
-
-#define DBL_MAX 1.7976931348623157e+308
-#define DBL_MIN 2.2250738585072014e-308
-#define FLT_MAX 3.4028235e+38f
-#define FLT_MIN 1.1754944e-38f
-#define INFINITY 1./0.
-#define NAN 0./0.
 
 
 void
@@ -23,7 +16,7 @@ testdulp()
     assert(dulp(DBL_MIN - 5e-324, DBL_MIN) == 1.);
     assert(dulp(-0., 0.) == 1.);
     assert(dulp(DBL_MAX, INFINITY) == 1.);
-    
+
     /* jump */
     assert(dulp(1., 1.5) == pow(2, 51));
 
@@ -58,7 +51,7 @@ testdulpf()
     assert(dulpf(FLT_MIN - 1e-45, FLT_MIN) == 1.);
     assert(dulpf(-0., 0.) == 1.);
     assert(dulpf(FLT_MAX, INFINITY) == 1.);
-    
+
     /* jump */
     assert(dulpf(1., 1.5) == pow(2, 22));
 
@@ -82,6 +75,22 @@ testvalf()
 }
 
 
+void
+testbits()
+{
+    /* bits */
+    assert(dulpbits(0.) == 0.);
+    assert(dulpbits(1.) == 1.);
+    assert(dulpbits(7) == 3.);
+    assert(dulpbits(8) < 4.);
+    assert(dulpbits(8) > 3.);
+    assert(dulpbits(dulp(-INFINITY, INFINITY)) < 64.);
+
+    /* absolute */
+    assert(dulpbits(dulp(.5, .7)) == dulpbits(dulp(.7, .5)));
+}
+
+
 int
 main()
 {
@@ -89,5 +98,6 @@ main()
     testdulp();
     testvalf();
     testdulpf();
+    testbits();
     return 0;
 }
