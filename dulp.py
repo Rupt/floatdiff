@@ -12,31 +12,31 @@ class Word64(Union):
 
 def dulp(x, y):
     """Return the order difference from x to y."""
-    vx = val(x)
-    vy = val(y)
-    return dif(vx, vy)
+    valx = val(x)
+    valy = val(y)
+    return dif(valx, valy)
 
 
-def dif(vx, vy):
-    """Return the difference of valuations vx and vy.
+def dif(valx, valy):
+    """Return the difference of valuations valx and valy.
 
     Trivial, but included for consistency with other modules.
     """
-    return float(vy - vx)
+    return float(valy - valx)
 
 
 def val(x):
     """Return an integer valuation of float x."""
-    i = Word64(f64=x).i64
+    value = Word64(f64=x).i64
 
-    if i < 0:
-        return -(1 << 63) - i - 1
+    if value < 0:
+        value = -(1 << 63) - value - 1
 
-    return i
+    return value
 
 
 def bits(delta):
-    """Return a bits-like transform of difference d.
+    """Return a bits-equivalent of dulp distance delta.
 
     The form log2(|delta| + 1) satisfies
         bits(0) == 0
@@ -47,5 +47,5 @@ def bits(delta):
     and so on.
     """
     delta = float(delta)
-    dist = abs(delta)
-    return log2(dist + 1.)
+    distance = abs(delta)
+    return log2(distance + 1.)

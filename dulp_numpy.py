@@ -50,29 +50,29 @@ def val(x):
     return value
 
 
-def dif(vx, vy):
-    """Return the (broadcasted) difference of valuations vx and vy.
+def dif(valx, valy):
+    """Return the (broadcasted) difference from valx to valy.
 
-    Inputs vx and vy must be int32 or int64, as returned by val(x).
+    Inputs valx and valy must be int32 or int64, as returned by val(x).
     """
-    vx = asanyarray(vx)
-    vy = asanyarray(vy)
+    valx = asanyarray(valx)
+    valy = asanyarray(valy)
 
-    if vx.dtype is not vy.dtype:
-        raise TypeError("%s is not %s" % (vx.dtype, vy.dtype))
+    if valx.dtype is not valy.dtype:
+        raise TypeError("%s is not %s" % (valx.dtype, valy.dtype))
 
-    if vx.dtype.type is int64:
-        delta = _dif(vx, vy)
-    elif vx.dtype.type is int32:
-        delta = _diff(vx, vy)
+    if valx.dtype.type is int64:
+        delta = _dif(valx, valy)
+    elif valx.dtype.type is int32:
+        delta = _diff(valx, valy)
     else:
-        raise TypeError("%s not in (int64, int32)" % vx.dtype)
+        raise TypeError("%s not in (int64, int32)" % valx.dtype)
 
     return delta
 
 
 def bits(delta):
-    """Return a bits-like transform of difference (array) d.
+    """Return a (broadcasted) bits-equivalent of dulp distance delta.
 
     The form log2(|delta| + 1) satisfies
         bits(0) == 0
@@ -83,22 +83,22 @@ def bits(delta):
     and so on.
     """
     delta = asanyarray(delta)
-    dist = absolute(delta)
-    return log2(dist + 1.)
+    distance = absolute(delta)
+    return log2(distance + 1.)
 
 
 def _dulp(x, y):
     "Return the order distance from float64 x to float64 y"
-    vx = _val(x)
-    vy = _val(y)
-    return _dif(vx, vy)
+    valx = _val(x)
+    valy = _val(y)
+    return _dif(valx, valy)
 
 
 def _dulpf(x, y):
     "Return the order distance from float32 x to float32 y"
-    vx = _valf(x)
-    vy = _valf(y)
-    return _diff(vx, vy)
+    valx = _valf(x)
+    valy = _valf(y)
+    return _diff(valx, valy)
 
 
 def _val(x):
@@ -123,19 +123,19 @@ def _valf(x):
     return value
 
 
-def _dif(vx, vy):
-    "Return the valuation difference from int64 vx to int64 vy"
+def _dif(valx, valy):
+    "Return the valuation difference from int64 valx to int64 valy"
     shift = int64(32)
     mask = int64(0xffffffff)
     scale = float64(mask + 1)
-    hi = vy >> shift
-    hi -= vx >> shift
-    lo = vy & mask
-    lo -= vx & mask
+    hi = valy >> shift
+    hi -= valx >> shift
+    lo = valy & mask
+    lo -= valx & mask
     return scale*hi + lo
 
 
-def _diff(vx, vy):
-    "Return the valuation difference from int32 vx to int32 vy"
-    delta = vy.astype(int64) - vx
+def _diff(valx, valy):
+    "Return the valuation difference from int32 valx to int32 valy"
+    delta = valy.astype(int64) - valx
     return delta.astype(float64)

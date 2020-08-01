@@ -24,8 +24,8 @@ double dulpf(float x, float y);
 int64_t dulpval(double x);
 int32_t dulpvalf(float x);
 
-double dulpdif(int64_t vx, int64_t vy);
-double dulpdiff(int32_t vx, int32_t vy);
+double dulpdif(int64_t valx, int64_t valy);
+double dulpdiff(int32_t valx, int32_t valy);
 
 double dulpbits(double d);
 
@@ -33,20 +33,20 @@ double dulpbits(double d);
 double
 dulp(double x, double y)
 {
-    int64_t vx, vy;
-    vx = dulpval(x);
-    vy = dulpval(y);
-    return dulpdif(vx, vy);
+    int64_t valx, valy;
+    valx = dulpval(x);
+    valy = dulpval(y);
+    return dulpdif(valx, valy);
 }
 
 
 double
 dulpf(float x, float y)
 {
-    int32_t vx, vy;
-    vx = dulpvalf(x);
-    vy = dulpvalf(y);
-    return dulpdiff(vx, vy);
+    int32_t valx, valy;
+    valx = dulpvalf(x);
+    valy = dulpvalf(y);
+    return dulpdiff(valx, valy);
 }
 
 
@@ -71,22 +71,22 @@ dulpvalf(float x)
 
 
 double
-dulpdif(int64_t vx, int64_t vy)
+dulpdif(int64_t valx, int64_t valy)
 {
     const int64_t shift = 32;
     const int64_t mask = ((int64_t)1 << shift) - 1;
     const double scale = mask + 1;
     int64_t hi, lo;
-    hi = dulpsar(vy, shift) - dulpsar(vx, shift);
-    lo = (vy & mask) - (vx & mask);
+    hi = dulpsar(valy, shift) - dulpsar(valx, shift);
+    lo = (valy & mask) - (valx & mask);
     return scale*hi + lo;
 }
 
 
 double
-dulpdiff(int32_t vx, int32_t vy)
+dulpdiff(int32_t valx, int32_t valy)
 {
-    return (int64_t)vy - (int64_t)vx;
+    return (int64_t)valy - (int64_t)valx;
 }
 
 
