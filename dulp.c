@@ -14,10 +14,6 @@
  */
 
 
-/* Portable arithmetic right shift. For constants only. */
-#define dulpsar(x, n) ((x) < 0 ? ~(~(x) >> (n)) : (x) >> (n))
-
-
 double dulp(double x, double y);
 double dulpf(float x, float y);
 
@@ -27,7 +23,9 @@ int32_t dulpvalf(float x);
 double dulpdif(int64_t valx, int64_t valy);
 double dulpdiff(int32_t valx, int32_t valy);
 
-double dulpbits(double d);
+double dulpbits(double delta);
+
+int64_t dulpsar(int64_t m, int64_t shift);
 
 
 double
@@ -56,7 +54,7 @@ dulpval(double x)
     const int64_t mask = ((uint64_t)1 << 63) - 1;
     union {double f64; int64_t i64;} word;
     word.f64 = x;
-    return dulpsar(word.i64, 63) ^ (word.i64 & mask);
+    return -(word.i64 < 0) ^ (word.i64 & mask);
 }
 
 
@@ -66,7 +64,7 @@ dulpvalf(float x)
     const int32_t mask = ((uint32_t)1 << 31) - 1;
     union {float f32; int32_t i32;} word;
     word.f32 = x;
-    return dulpsar(word.i32, 31) ^ (word.i32 & mask);
+    return -(word.i32 < 0) ^ (word.i32 & mask);
 }
 
 
@@ -76,9 +74,8 @@ dulpdif(int64_t valx, int64_t valy)
     const int64_t shift = 32;
     const int64_t mask = ((int64_t)1 << shift) - 1;
     const double scale = mask + 1;
-    int64_t hi, lo;
-    hi = dulpsar(valy, shift) - dulpsar(valx, shift);
-    lo = (valy & mask) - (valx & mask);
+    int64_t hi = dulpsar(valy, shift) - dulpsar(valx, shift);
+    int64_t lo = (valy & mask) - (valx & mask);
     return scale*hi + lo;
 }
 
@@ -90,7 +87,17 @@ dulpdiff(int32_t valx, int32_t valy)
 }
 
 
-double dulpbits(double d)
+double dulpbits(double delta)
 {
-    return log2(fabs(d) + 1.);
+    return log2(fabs(delta) + 1.);
+}
+
+
+/* Portable arithmetic right shift. */
+int64_t
+dulpsar(int64_t val, int64_t shift)
+{
+    const int64_t logical = (int64_t)-1 >> 1 > 0;
+    int64_t sar = logical && val < 0;
+    return (val >> shift) | (-sar << (64 - shift));
 }

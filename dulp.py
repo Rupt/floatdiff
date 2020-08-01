@@ -30,7 +30,7 @@ def val(x):
     value = Word64(f64=x).i64
 
     if value < 0:
-        value = -(1 << 63) - value - 1
+        value = -(1 << 63) + ~value
 
     return value
 

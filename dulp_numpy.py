@@ -104,7 +104,7 @@ def _dulpf(x, y):
 def _val(x):
     "Return an integer valuation of float64 x"
     shift = int64(63)
-    mask = int64(0x7fffffffffffffff)
+    mask = int64((1 << 63) - 1)
     i64 = x.view(int64)
     value = i64 >> shift
     value &= mask
@@ -115,7 +115,7 @@ def _val(x):
 def _valf(x):
     "Return an integer valuation of float32 x"
     shift = int32(31)
-    mask = int32(0x7fffffff)
+    mask = int32((1 << 31) - 1)
     i32 = x.view(int32)
     value = i32 >> shift
     value &= mask
@@ -126,7 +126,7 @@ def _valf(x):
 def _dif(valx, valy):
     "Return the valuation difference from int64 valx to int64 valy"
     shift = int64(32)
-    mask = int64(0xffffffff)
+    mask = int64((1 << 32) - 1)
     scale = float64(mask + 1)
     hi = valy >> shift
     hi -= valx >> shift
