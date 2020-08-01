@@ -31,9 +31,8 @@ int64_t dulpsar(int64_t m, int64_t shift);
 double
 dulp(double x, double y)
 {
-    int64_t valx, valy;
-    valx = dulpval(x);
-    valy = dulpval(y);
+    int64_t valx = dulpval(x);
+    int64_t valy = dulpval(y);
     return dulpdif(valx, valy);
 }
 
@@ -41,9 +40,8 @@ dulp(double x, double y)
 double
 dulpf(float x, float y)
 {
-    int32_t valx, valy;
-    valx = dulpvalf(x);
-    valy = dulpvalf(y);
+    int32_t valx = dulpvalf(x);
+    int32_t valy = dulpvalf(y);
     return dulpdiff(valx, valy);
 }
 
@@ -52,8 +50,7 @@ int64_t
 dulpval(double x)
 {
     const int64_t mask = ((uint64_t)1 << 63) - 1;
-    union {double f64; int64_t i64;} word;
-    word.f64 = x;
+    union {double f64; int64_t i64;} word = {x};
     return -(word.i64 < 0) ^ (word.i64 & mask);
 }
 
@@ -62,8 +59,7 @@ int32_t
 dulpvalf(float x)
 {
     const int32_t mask = ((uint32_t)1 << 31) - 1;
-    union {float f32; int32_t i32;} word;
-    word.f32 = x;
+    union {float f32; int32_t i32;} word = {x};
     return -(word.i32 < 0) ^ (word.i32 & mask);
 }
 
@@ -83,7 +79,7 @@ dulpdif(int64_t valx, int64_t valy)
 double
 dulpdiff(int32_t valx, int32_t valy)
 {
-    return (int64_t)valy - (int64_t)valx;
+    return (int64_t)valy - valx;
 }
 
 
