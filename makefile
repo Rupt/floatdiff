@@ -43,6 +43,6 @@ bench: bench-numpy bench-numpyf
 
 
 .PHONY: clean \
-		test-py test-numpy test-c test \
-		lint \
-		bench-numpy bench-numpyf bench
+	test-py test-numpy test-c test \
+	lint \
+	bench-numpy bench-numpyf bench

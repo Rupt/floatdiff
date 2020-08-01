@@ -1,12 +1,12 @@
 """dulp measures order distances between floats"""
-from ctypes import Union, c_double, c_ulonglong
+from ctypes import Union, c_double, c_longlong
 from math import log2
 
 
 class Word64(Union):
     _fields_ = [
-        ("f8", c_double),
-        ("u8", c_ulonglong),
+        ("f64", c_double),
+        ("i64", c_longlong),
     ]
 
 
@@ -14,29 +14,25 @@ def dulp(x, y):
     """Return the order difference from x to y."""
     vx = val(x)
     vy = val(y)
-    delta = dif(vx, vy)
-    return delta
+    return dif(vx, vy)
 
 
 def dif(vx, vy):
     """Return the difference of valuations vx and vy.
 
-    Trivial, but included for internal consistency.
+    Trivial, but included for consistency with other modules.
     """
     return float(vy - vx)
 
 
 def val(x):
     """Return an integer valuation of float x."""
-    u = Word64(f8=x).u8
+    i = Word64(f64=x).i64
 
-    sign = 1 << 63
-    if u < sign:
-        value = sign + u
-    else:
-        value = 2*sign - 1 - u
+    if i < 0:
+        return -(1 << 63) - i - 1
 
-    return value
+    return i
 
 
 def bits(delta):
@@ -51,4 +47,5 @@ def bits(delta):
     and so on.
     """
     delta = float(delta)
-    return log2(abs(delta) + 1.)
+    dist = abs(delta)
+    return log2(dist + 1.)

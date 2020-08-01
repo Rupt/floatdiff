@@ -7,7 +7,8 @@ from dulp import dulp, val, dif, bits
 
 f64max = sys.float_info.max
 f64min = sys.float_info.min
-u64max = (1 << 64) - 1
+i64max = (1 << 63) - 1
+i64min = -(1 << 63)
 
 
 class TestDulp(unittest.TestCase):
@@ -51,8 +52,10 @@ class TestDif(unittest.TestCase):
 
     def test_dif(self):
         self.assertEqual(dif(0, 1), 1.)
-        self.assertEqual(dif(0, u64max), float(u64max))
-        self.assertEqual(dif(u64max, 0), -float(u64max))
+        self.assertEqual(dif(0, i64max), float(i64max))
+        self.assertEqual(dif(i64max, 0), -float(i64max))
+        self.assertEqual(dif(0, i64min), float(i64min))
+        self.assertEqual(dif(i64min, 0), -float(i64min))
 
 
 class TestBits(unittest.TestCase):

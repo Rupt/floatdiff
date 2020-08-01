@@ -4,7 +4,7 @@ import unittest
 import numpy
 from numpy import inf, nan
 from numpy import float32, float64
-from numpy import uint32, uint64
+from numpy import int32, int64
 
 from dulp_numpy import dulp, val, dif, bits
 
@@ -12,9 +12,10 @@ f64max = numpy.finfo(float64).max
 f64min = numpy.finfo(float64).tiny
 f32max = numpy.finfo(float32).max
 f32min = numpy.finfo(float32).tiny
-u64max = uint64(numpy.iinfo(uint64).max)
-u32max = uint32(numpy.iinfo(uint32).max)
-
+i64max = int64(numpy.iinfo(int64).max)
+i64min = int64(numpy.iinfo(int64).min)
+i32max = int32(numpy.iinfo(int32).max)
+i32min = int32(numpy.iinfo(int32).min)
 
 class TestDulp(unittest.TestCase):
     def test_type(self):
@@ -91,9 +92,9 @@ class TestDulp(unittest.TestCase):
 
 class TestVal(unittest.TestCase):
     def test_type(self):
-        self.assertIs(val(.7).dtype.type, uint64)
+        self.assertIs(val(.7).dtype.type, int64)
         self.assertIsInstance(val([.7]), numpy.ndarray)
-        self.assertIs(val(float32(.7)).dtype.type, uint32)
+        self.assertIs(val(float32(.7)).dtype.type, int32)
         self.assertIsInstance(val([float32(.7)]), numpy.ndarray)
 
     def test_order(self):
@@ -111,20 +112,24 @@ class TestVal(unittest.TestCase):
 
 class TestDif(unittest.TestCase):
     def test_type(self):
-        self.assertIs(dif(uint32(1), uint32(2)).dtype.type, float64)
-        self.assertIs(dif(uint64(1), uint64(2)).dtype.type, float64)
+        self.assertIs(dif(int32(1), int32(2)).dtype.type, float64)
+        self.assertIs(dif(int64(1), int64(2)).dtype.type, float64)
         with self.assertRaises(TypeError):
-            dif(uint32(1), uint64(1))
+            dif(int32(1), int64(1))
 
     def test_dif(self):
-        self.assertEqual(dif(uint64(0), uint64(1)), 1.)
-        self.assertEqual(dif(uint64(0), u64max), float64(u64max))
-        self.assertEqual(dif(u64max, uint64(0)), -float64(u64max))
+        self.assertEqual(dif(int64(0), int64(1)), 1.)
+        self.assertEqual(dif(int64(0), i64max), float64(i64max))
+        self.assertEqual(dif(i64max, int64(0)), -float64(i64max))
+        self.assertEqual(dif(int64(0), i64min), float64(i64min))
+        self.assertEqual(dif(i64min, int64(0)), -float64(i64min))
 
     def test_diff(self):
-        self.assertEqual(dif(uint32(0), uint32(1)), 1)
-        self.assertEqual(dif(uint32(0), u32max), float64(u32max))
-        self.assertEqual(dif(u32max, uint32(0)), -float64(u32max))
+        self.assertEqual(dif(int32(0), int32(1)), 1)
+        self.assertEqual(dif(int32(0), i32max), float64(i32max))
+        self.assertEqual(dif(i32max, int32(0)), -float64(i32max))
+        self.assertEqual(dif(int32(0), i32min), float64(i32min))
+        self.assertEqual(dif(i32min, int32(0)), -float64(i32min))
 
 
 class TestBits(unittest.TestCase):
