@@ -7,7 +7,7 @@ python -m timeit -vv -s "from bench_numpy import benchf" "benchf()"
 
 """
 import numpy
-import dulp_numpy
+from .dulp_numpy import dulp
 
 ntest = 1000*1000
 numpy.random.seed(1234)
@@ -17,7 +17,7 @@ testxf = testx.astype(numpy.float32)
 testyf = testy.astype(numpy.float32)
 
 def bench():
-    return dulp_numpy.dulp(testx, testy)
+    return dulp(testx, testy)
 
 def benchf():
-    return dulp_numpy.dulp(testxf, testyf)
+    return dulp(testxf, testyf)
