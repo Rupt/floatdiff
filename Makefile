@@ -4,9 +4,16 @@ LDFLAGS=-lm
 PYLINTFLAGS=--exit-zero --score n
 
 
+options:
+	@echo "CC=${CC}"
+	@echo "CFLAGS=${CFLAGS}"
+	@echo "LDFLAGS=${LDFLAGS}"
+	@echo "PYLINTFLAGS=${PYLINTFLAGS}"
+
+
 clean:
 	rm -f *.pyc *.o test-c perf.*
-	rm -rf {.,c,py}/__pycache__ 
+	rm -rf {.,py}/__pycache__
 
 
 test-py:
@@ -43,7 +50,7 @@ bench-numpyf:
 bench: bench-numpy bench-numpyf
 
 
-.PHONY: clean \
+.PHONY: options clean \
 	test-py test-numpy test-c test \
 	lint \
 	bench-numpy bench-numpyf bench
