@@ -74,5 +74,14 @@ class TestBits(unittest.TestCase):
         self.assertEqual(bits(dulp(.5, .7)), bits(dulp(.7, .5)))
 
 
+class TestREADME(unittest.TestCase):
+    def test_intro(self):
+        self.assertEqual(dulp(1., 1. + 2**-52), 1.)
+        self.assertEqual(dulp(1., 1. - 2**-50), -8.)
+        self.assertEqual(dulp(1.6180339887, (1 + 5**0.5)/2), 224707.)
+        self.assertEqual(dulp(-0., 0.), 1.)
+
+
+
 if __name__ == "__main__":
     unittest.main()
