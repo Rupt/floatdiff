@@ -149,5 +149,16 @@ class TestBits(unittest.TestCase):
         self.assertEqual(bits(dulp(.5, .7)), bits(dulp(.7, .5)))
 
 
+class TestREADME(unittest.TestCase):
+    def test_readme(self):
+        vec = dulp(1., [1. + 2.**-52, 1. + 2.**-50])
+        self.assertEqual(vec.shape, (2,))
+        self.assertEqual(list(vec), [1., 4.])
+        self.assertEqual(dulp(float32(1.6180339887),
+                              float32((1 + 5**0.5)/2)), 0.)
+        with self.assertRaises(TypeError):
+            dulp(-0., float32(0.))
+
+
 if __name__ == "__main__":
     unittest.main()

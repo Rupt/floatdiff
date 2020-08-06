@@ -91,13 +91,23 @@ testbits()
 }
 
 
+void
+testreadme()
+{
+    assert(dulp(1., 1. + pow(2, -52)) == 1.);
+    assert(dulp(1.6180339887, (1 + sqrt(5))/2) == 224707.);
+    assert(dulpf(-0., 0.) == 1.f);
+}
+
+
 int
 main()
 {
-    testval();
     testdulp();
-    testvalf();
+    testval();
     testdulpf();
+    testvalf();
     testbits();
+    testreadme();
     return 0;
 }

@@ -75,9 +75,8 @@ class TestBits(unittest.TestCase):
 
 
 class TestREADME(unittest.TestCase):
-    def test_intro(self):
+    def test_readme(self):
         self.assertEqual(dulp(1., 1. + 2**-52), 1.)
-        self.assertEqual(dulp(1., 1. - 2**-50), -8.)
         self.assertEqual(dulp(1.6180339887, (1 + 5**0.5)/2), 224707.)
         self.assertEqual(dulp(-0., 0.), 1.)
 
