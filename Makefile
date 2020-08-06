@@ -1,5 +1,5 @@
 CC=cc
-CFLAGS=-Wall -Wextra -pedantic -Werror -std=c99
+CFLAGS=-Wall -Wextra -pedantic -Werror -std=c99 -fsanitize=undefined
 LDFLAGS=-lm
 PYLINTFLAGS=--exit-zero --score n
 
@@ -16,11 +16,11 @@ clean:
 	rm -rf {.,py}/__pycache__
 
 
-test-py:
+test-py: py/test.py
 	python py/test.py
 
 
-test-numpy:
+test-numpy: py/test_numpy.py
 	python py/test_numpy.py
 
 
@@ -51,6 +51,5 @@ bench: bench-numpy bench-numpyf
 
 
 .PHONY: options clean \
-	test-py test-numpy test-c test \
 	lint \
 	bench-numpy bench-numpyf bench
