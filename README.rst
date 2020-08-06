@@ -6,8 +6,8 @@
 Floating point differences: dulp
 ================================
 
-`dulp`_ puts floating-point numbers in order, then measures differences
-by counting the steps between them.
+`dulp`_ measures differences between floating point numbers by 
+putting them in order, then counting steps.
 
 .. code-block:: python
 
@@ -20,22 +20,39 @@ by counting the steps between them.
 This distance was proposed by an anonymous reviewer of
 *"On the definition of ulp (x)"* (JM Muller 2005).
 
+
+WIP project
+
 Detail
 ------
 
+We first construct a valuation which assigns integers to floats
+while preserving numerical order.
+
 .. code-block:: python
 
-    # Paraphrasing Muller
-    # define an integer valuation
-    val(x)
-    # such that
-    val(0.) == 0
-    # and, if y is the next representable number after x, then
-    val(y) == val(x) + 1
+    val(0.618) < val(1.618) # True
+    
+Following Muller's definition, we also have
 
-    # the distance then has
-    dulp(x, y) == val(y) - val(x)
-    # and is more conveniently represented as a float.
+.. code-block:: python
 
+    val(0.) == 0 # True
+    
+and
+
+.. code-block:: python
+
+    val(x + eps) == val(x) + 1 # True
+
+whenever ``x + eps`` is the smallest float larger than ``x``.
+
+The dulp distance is then simply the valuation difference
+
+.. code-block:: python
+
+    dulp(x, y) == float(val(y) - val(x)) # True
+
+converted to float for convenience with large differences.
 
 .. _`dulp`: https://github.com/Rupt/dulp
