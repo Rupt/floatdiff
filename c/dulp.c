@@ -21,8 +21,10 @@
  * and
  *     val(x, x + eps) == 1
  * where x + eps is the next floating point number after x.
- * Floats almost have this naturally in their binary, but are reversed
- * for negative numbers; we just reverse negative numbers' order.
+ *
+ * Floats almost have this naturally when reinterpreted as integers,
+ * but are reversed for negative numbers.
+ * We just reverse negative numbers' order.
  *
  *
  * The dulp directed distance from x to y equals val(y) - val(x), in
