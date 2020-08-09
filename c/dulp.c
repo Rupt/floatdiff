@@ -25,7 +25,7 @@ double dulpdiff(int32_t valx, int32_t valy);
 
 double dulpbits(double delta);
 
-int64_t dulpsar(int64_t m, int64_t shift);
+int64_t dulpsar(int64_t m, uint_fast8_t n);
 
 
 double
@@ -91,9 +91,10 @@ double dulpbits(double delta)
 
 /* Portable arithmetic right shift. */
 int64_t
-dulpsar(int64_t val, int64_t shift)
+dulpsar(int64_t m, uint_fast8_t n)
 {
-    const int64_t logical = (int64_t)-1 >> 1 > 0;
-    int64_t sar = logical && val < 0;
-    return (val >> shift) | (-sar << (64 - shift));
+    const int logical = (((int64_t)-1) >> 1) > 0;
+    uint64_t fixu = -(logical & (m < 0));
+    int64_t fix = *(int64_t*)&fixu;
+    return (m >> n) | (fix ^ (fix >> n));
 }
