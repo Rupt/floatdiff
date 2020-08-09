@@ -13,15 +13,15 @@ options:
 
 clean:
 	rm -f *.pyc *.o test-c perf.*
-	rm -rf py/dulp/__pycache__
+	rm -rf py/dulp/{,np/}__pycache__
 
 
 test-py: py/dulp/test.py
 	python py/dulp/test.py
 
 
-test-numpy: py/dulp/test_np.py
-	python py/dulp/test_np.py
+test-numpy: py/dulp/test_numpy.py
+	python py/dulp/test_numpy.py
 
 
 test-c: c/test.c c/dulp.c
@@ -35,12 +35,13 @@ test: test-c test-py test-numpy
 lint:
 	pylint py/dulp $(PYLINTFLAGS)
 
+
 bench-numpy:
-	python -m timeit -vv -s "from py.dulp.bench_np import bench" "bench()"
+	python -m timeit -vv -s "from py.dulp.bench_numpy import bench" "bench()"
 
 
 bench-numpyf:
-	python -m timeit -vv -s "from py.dulp.bench_np import benchf" "benchf()"
+	python -m timeit -vv -s "from py.dulp.bench_numpy import benchf" "benchf()"
 
 
 bench: bench-numpy bench-numpyf
