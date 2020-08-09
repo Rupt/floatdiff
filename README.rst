@@ -14,7 +14,7 @@ putting them in order, then counting steps.
     from dulp import dulp
     
     dulp(1., 1. + 2.**-52) # 1.
-    dulp(1.6180339887, (1 + 5**0.5)/2) # 224707.
+    dulp(1.6180339887, (1. + 5**0.5)/2) # 224707.
     dulp(-0., 0.) # 1.
 
     
@@ -46,9 +46,9 @@ putting them in order, then counting steps.
     #include <stdint.h>
     #include "dulp.c"
     
-    dulp(1., 1. + pow(2, -52)); # 1.
-    dulp(1.6180339887, (1 + sqrt(5))/2); # 224707.
-    dulpf(-0., 0.) # 1.f
+    dulp(1., 1. + pow(2, -52)); /* 1. */
+    dulp(1.6180339887, (1. + sqrt(5))/2); /* 224707. */
+    dulpf(-0., 0.) /* 1.f */
 
 .. raw:: html
 
