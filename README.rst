@@ -25,7 +25,7 @@ putting them in order, then counting steps.
 
 .. code-block:: python
 
-    from dulp.numpy import dulp
+    from dulp.np import dulp
     from numpy import float32
     
     dulp(1., [1. + 2.**-52, 1. + 2.**-50]) # array([1., 4.])
