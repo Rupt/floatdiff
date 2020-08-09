@@ -33,15 +33,24 @@ test: test-c test-py test-numpy
 
 
 lint:
+	# with a grain of salt
 	pylint py/dulp $(PYLINTFLAGS)
 
 
 bench-numpy:
-	python -m timeit -vv -s "from py.dulp.bench_numpy import bench" "bench()"
+	python -m timeit -vv -s "\
+	from py.dulp.np import dulp;\
+	from py.dulp.bench_numpy import init;\
+	x, y = init()" \
+	"dulp(x, y)"
 
 
 bench-numpyf:
-	python -m timeit -vv -s "from py.dulp.bench_numpy import benchf" "benchf()"
+	python -m timeit -vv -s "\
+	from py.dulp.np import dulp;\
+	from py.dulp.bench_numpy import initf;\
+	x, y = initf()" \
+	"dulp(x, y)"
 
 
 bench: bench-numpy bench-numpyf
