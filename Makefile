@@ -57,10 +57,8 @@ bench: bench-numpy bench-numpyf
 
 
 setup:
-	cd py/ && \
-	python3 setup.py sdist bdist_wheel && \
-	cd -
-	python3 -m twine upload --repository testpypi dist/*
+	cd py/ && python3 setup.py sdist bdist_wheel && cd -
+	cd py/ && python3 -m twine upload --repository testpypi dist/*  && cd-
 
 
 .PHONY: options clean \

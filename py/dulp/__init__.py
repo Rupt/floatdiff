@@ -1,4 +1,4 @@
-"""Floating point differences: dulp
+"""Floating point differences -- dulp
 
 Includes native python here.
 
