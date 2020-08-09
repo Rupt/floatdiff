@@ -7,7 +7,7 @@ python -m timeit -vv -s "from bench_numpy import benchf" "benchf()"
 
 """
 import numpy
-from .dulp_numpy import dulp
+from np import dulp
 
 ntest = 1000*1000
 numpy.random.seed(1234)
