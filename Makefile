@@ -12,8 +12,9 @@ options:
 
 
 clean:
-	rm -f *.pyc *.o test-c perf.*
+	rm -f *.pyc test-c
 	rm -rf py/dulp/{,np/}__pycache__
+	rm -rf py/build/ py/dist/ py/dulp_tombs.egg-info/
 
 
 test-py: py/dulp/test.py
