@@ -72,8 +72,13 @@ where x + eps is the next floating point number after x.
 Floats almost have this naturally in their binary, but are reversed for
 negative numbers; we just reverse negative numbers' order.
 
-The ``dulp(x, y)`` directed distance from ``x`` to ``y`` equals ``val(y) - val(x)``,
-casted to double precision for convenience with small and large distances.
+Then
+
+.. code-block:: python
+
+    dulp(x, y) == float(val(y) - val(x)) # True
+
+casted to floating point for convenience with small and large distances.
 
 A bits-precision equivalent conversion is given by ``dulpbits``.
 
