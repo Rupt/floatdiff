@@ -9,6 +9,7 @@ counting the discrete spaces between them.
 This distance was proposed by an anonymous reviewer to
 *"On the definition of ulp(x)"* (JM Muller 2005).
 
+**Python**
 
 .. code-block:: python
 
@@ -19,10 +20,7 @@ This distance was proposed by an anonymous reviewer to
     dulp(-0., 0.) # 1.
 
 
-.. raw:: html
-
-   <details>
-   <summary><b>numpy</b></summary>
+**Numpy**
 
 .. code-block:: python
 
@@ -33,14 +31,8 @@ This distance was proposed by an anonymous reviewer to
     dulp(float32((1 + 5**0.5)/2), float32(1.6180339887)) # 0.
     dulp(-0., float32(0.)) # TypeError
 
-.. raw:: html
 
-   </details>
-
-.. raw:: html
-
-   <details>
-   <summary><b>C</b></summary>
+**C**
 
 .. code-block:: C
 
@@ -51,12 +43,10 @@ This distance was proposed by an anonymous reviewer to
     dulp((1. + sqrt(5))/2, 1.6180339887); /* -224707. */
     dulpf(-0., 0.) /* 1.f */
 
-.. raw:: html
+Details
+-------
 
-   </details>
-
-
-Each float or double gets an integer valuation val(x) which satisfies
+Each float or double gets an integer valuation ``val(x)`` satisfying
 
 .. code-block:: python
 
@@ -69,8 +59,10 @@ and
     val(x + eps) == val(x) + 1 # True
 
 where x + eps is the next floating point number after x.
-Floats almost have this naturally in their binary, but are reversed for
-negative numbers; we just reverse negative numbers' order.
+
+Floats almost have this naturally when reinterpreted as integers,
+but are reversed for negative numbers.
+We just reverse negative numbers' order.
 
 Then
 
