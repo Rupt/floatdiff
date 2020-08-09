@@ -6,15 +6,15 @@
 Floating point differences: dulp
 ================================
 
-`dulp`_ measures differences between floating point numbers by 
-putting them in order, then counting steps.
+`dulp`_ measures directed differences between floating point numbers by 
+the counting the discrete spaces between them.
 
 .. code-block:: python
 
     from dulp import dulp
     
     dulp(1., 1. + 2.**-52) # 1.
-    dulp(1.6180339887, (1. + 5**0.5)/2) # 224707.
+    dulp((1. + 5**0.5)/2, 1.6180339887) # -224707.
     dulp(-0., 0.) # 1.
 
     
@@ -29,7 +29,7 @@ putting them in order, then counting steps.
     from numpy import float32
     
     dulp(1., [1. + 2.**-52, 1. + 2.**-50]) # array([1., 4.])
-    dulp(float32(1.6180339887), float32((1 + 5**0.5)/2)) # 0.
+    dulp(float32((1 + 5**0.5)/2), float32(1.6180339887)) # 0.
     dulp(-0., float32(0.)) # TypeError
 
 .. raw:: html
@@ -47,7 +47,7 @@ putting them in order, then counting steps.
     #include "dulp.c"
     
     dulp(1., 1. + pow(2, -52)); /* 1. */
-    dulp(1.6180339887, (1. + sqrt(5))/2); /* 224707. */
+    dulp((1. + sqrt(5))/2, 1.6180339887); /* -224707. */
     dulpf(-0., 0.) /* 1.f */
 
 .. raw:: html

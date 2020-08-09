@@ -95,7 +95,7 @@ void
 testreadme()
 {
     assert(dulp(1., 1. + pow(2, -52)) == 1.);
-    assert(dulp(1.6180339887, (1 + sqrt(5))/2) == 224707.);
+    assert(dulp((1 + sqrt(5))/2, 1.6180339887) == -224707.);
     assert(dulpf(-0., 0.) == 1.f);
 }
 
