@@ -56,6 +56,13 @@ bench-numpyf:
 bench: bench-numpy bench-numpyf
 
 
+setup:
+	cd py/ && \
+	python3 setup.py sdist bdist_wheel && \
+	cd -
+	python3 -m twine upload --repository testpypi dist/*
+
+
 .PHONY: options clean \
-	lint \
-	bench-numpy bench-numpyf bench
+	bench-numpy bench-numpyf \
+	lint setup

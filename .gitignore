@@ -1,4 +1,12 @@
+# us
+test-c
+
+# python
 __pycache__/
 *.py[cod]
 *$py.class 
-test-c
+
+# packaging
+build/
+dist/
+dulp_tombs.egg-info/
