@@ -1,15 +1,61 @@
-"""
-TODO documentation
+"""Floating point differences --- dulp (numpy module)
 
-python -m timeit -vv -s "from dulp_numpy import perf" "perf()"
+dulp measures directed differences between floating point numbers by
+counting the discrete spaces between them.
+
+This distance was proposed by an anonymous reviewer to
+*"On the definition of ulp(x)"* (JM Muller 2005).
+
+>>> from dulp.np import dulp
+>>> from numpy import float32
+>>>
+>>> dulp(1., [1. + 2.**-52, 1. + 2.**-50]) # array([1., 4.])
+>>> dulp(float32((1 + 5**0.5)/2), float32(1.6180339887)) # 0.
+>>> dulp(-0., float32(0.)) # TypeError
 
 
+Each float gets an integer valuation val(x) which satisfies
+
+>>> val(0.) == 0 # True
+
+>>> val(x + eps) == val(x) + 1 # True
+
+where x + eps is the next floating point number after x.
+Floats almost have this naturally in their binary, but are reversed for
+negative numbers; we just reverse negative numbers' order.
+
+
+The dulp(x, y) directed distance from x to y equals val(y) - val(x),
+casted to float for convenience with small and large distances.
+
+A bits-precision equivalent conversion is given by dulpbits.
+
+
+This optional module uses numpy types and broadcasting features.
+
+
+Assumes IEEE 764 binary64 and binary32 for float64s and float32s.
 """
 from numpy import asanyarray
-from numpy import absolute
-from numpy import log2
+from numpy import absolute, log2
 from numpy import float32, float64
 from numpy import int32, int64
+
+
+def bits(delta):
+    """Return a (broadcasted) bits-equivalent of dulp distance delta.
+
+    The form log2(|delta| + 1) satisfies
+        bits(0) == 0
+        bits(1) == 1
+        bits(0b111) == 3               (0b111 == 7)
+    with interpolation such that
+        3 < bits(0b1000) < 4          (0b1000 == 8)
+    and so on.
+    """
+    delta = asanyarray(delta)
+    distance = absolute(delta)
+    return log2(distance + 1.)
 
 
 def dulp(x, y):
@@ -69,22 +115,6 @@ def dif(valx, valy):
         raise TypeError("%s not in (int64, int32)" % valx.dtype)
 
     return delta
-
-
-def bits(delta):
-    """Return a (broadcasted) bits-equivalent of dulp distance delta.
-
-    The form log2(|delta| + 1) satisfies
-        bits(0) == 0
-        bits(1) == 1
-        bits(0b111) == 3               (0b111 == 7)
-    with interpolation such that
-        3 < bits(0b1000) < 4          (0b1000 == 8)
-    and so on.
-    """
-    delta = asanyarray(delta)
-    distance = absolute(delta)
-    return log2(distance + 1.)
 
 
 def _dulp(x, y):

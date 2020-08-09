@@ -1,31 +1,24 @@
-.. highlight:: rst
 
-.. role:: python(code)
-    :language: python
-
-Floating point differences: dulp
+Floating point differences --- dulp
 ================================
 
-`dulp`_ measures directed differences between floating point numbers by 
-the counting the discrete spaces between them.
+`dulp`_ measures directed differences between floating point numbers by
+counting the discrete spaces between them.
 
 
-This implements the distance proposed by an anonymous reviewer of
-*"On the definition of ulp (x)"* (JM Muller 2005).
-
-
-WIP
+This distance was proposed by an anonymous reviewer to
+*"On the definition of ulp(x)"* (JM Muller 2005).
 
 
 .. code-block:: python
 
     from dulp import dulp
-    
+
     dulp(1., 1. + 2.**-52) # 1.
     dulp((1. + 5**0.5)/2, 1.6180339887) # -224707.
     dulp(-0., 0.) # 1.
 
-    
+
 .. raw:: html
 
    <details>
@@ -35,7 +28,7 @@ WIP
 
     from dulp.np import dulp
     from numpy import float32
-    
+
     dulp(1., [1. + 2.**-52, 1. + 2.**-50]) # array([1., 4.])
     dulp(float32((1 + 5**0.5)/2), float32(1.6180339887)) # 0.
     dulp(-0., float32(0.)) # TypeError
@@ -43,7 +36,7 @@ WIP
 .. raw:: html
 
    </details>
-   
+
 .. raw:: html
 
    <details>
@@ -53,7 +46,7 @@ WIP
 
     #include <stdint.h>
     #include "dulp.c"
-    
+
     dulp(1., 1. + pow(2, -52)); /* 1. */
     dulp((1. + sqrt(5))/2, 1.6180339887); /* -224707. */
     dulpf(-0., 0.) /* 1.f */
@@ -63,37 +56,26 @@ WIP
    </details>
 
 
-Detail
-------
-
-We first construct a valuation which assigns integers to floats
-while preserving numerical order.
-
-.. code-block:: python
-
-    val(0.618) < val(1.618) # True
-    
-Following Muller's definition, we also have
+Each float or double gets an integer valuation val(x) which satisfies
 
 .. code-block:: python
 
     val(0.) == 0 # True
-    
+
 and
 
 .. code-block:: python
 
     val(x + eps) == val(x) + 1 # True
 
-whenever ``x + eps`` is the smallest float larger than ``x``.
+where x + eps is the next floating point number after x.
+Floats almost have this naturally in their binary, but are reversed for
+negative numbers; we just reverse negative numbers' order.
 
-The dulp distance is then simply the valuation difference
+The ``dulp(x, y)`` directed distance from ``x`` to ``y`` equals ``val(y) - val(x)``,
+casted to double precision for convenience with small and large distances.
 
-.. code-block:: python
-
-    dulp(x, y) == float(val(y) - val(x)) # True
-
-converted to float for convenience with large differences.
+A bits-precision equivalent conversion is given by ``dulpbits``.
 
 
 .. _`dulp`: https://github.com/Rupt/dulp
