@@ -9,6 +9,14 @@ Floating point differences: dulp
 `dulp`_ measures directed differences between floating point numbers by 
 the counting the discrete spaces between them.
 
+
+This implements the distance proposed by an anonymous reviewer of
+*"On the definition of ulp (x)"* (JM Muller 2005).
+
+
+WIP
+
+
 .. code-block:: python
 
     from dulp import dulp
@@ -54,11 +62,6 @@ the counting the discrete spaces between them.
 
    </details>
 
-This distance was proposed by an anonymous reviewer of
-*"On the definition of ulp (x)"* (JM Muller 2005).
-
-
-WIP project
 
 Detail
 ------
