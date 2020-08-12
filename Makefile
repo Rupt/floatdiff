@@ -1,5 +1,5 @@
 CC=cc
-CFLAGS=-Wall -Wextra -pedantic -Werror -std=c99 -fsanitize=undefined
+CFLAGS=-Wall -Wextra -pedantic -Werror -fsanitize=undefined -std=c99
 LDFLAGS=-lm
 PYLINTFLAGS=--exit-zero --score n
 
