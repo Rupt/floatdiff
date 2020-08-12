@@ -43,8 +43,9 @@
  *     fabs, log2
  *
  * stdint.h
- *     int32_t int64_t uint32_t uint64_t uint_fast8_t
- *
+ *     int_least32_t int_least64_t
+ *     uint_least32_t uint_least64_t
+ *     uint_fast8_t
  */
 
 static double dulpbits(double delta);
@@ -52,13 +53,13 @@ static double dulpbits(double delta);
 static double dulp(double x, double y);
 static double dulpf(float x, float y);
 
-static int64_t dulpval(double x);
-static int32_t dulpvalf(float x);
+static int_least64_t dulpval(double x);
+static int_least32_t dulpvalf(float x);
 
-static double dulpdif(int64_t valx, int64_t valy);
-static double dulpdiff(int32_t valx, int32_t valy);
+static double dulpdif(int_least64_t valx, int_least64_t valy);
+static double dulpdiff(int_least32_t valx, int_least32_t valy);
 
-static int64_t dulpsar(int64_t m, uint_fast8_t n);
+static int_least64_t dulpsar(int_least64_t m, uint_fast8_t n);
 
 
 /*
@@ -84,15 +85,15 @@ dulpbits(double delta)
  * Directed distances for double and float.
  *
  * Returns double since 53 bits of precision are plenty, and inexact
- * representations allow signed differences between uint64_t numbers.
+ * representations allow signed differences between 64 bit numbers.
  *
  * Please cast to float for increased memory performance.
  */
 static double
 dulp(double x, double y)
 {
-    int64_t valx = dulpval(x);
-    int64_t valy = dulpval(y);
+    int_least64_t valx = dulpval(x);
+    int_least64_t valy = dulpval(y);
     return dulpdif(valx, valy);
 }
 
@@ -100,8 +101,8 @@ dulp(double x, double y)
 static double
 dulpf(float x, float y)
 {
-    int32_t valx = dulpvalf(x);
-    int32_t valy = dulpvalf(y);
+    int_least32_t valx = dulpvalf(x);
+    int_least32_t valy = dulpvalf(y);
     return dulpdiff(valx, valy);
 }
 
@@ -119,20 +120,20 @@ dulpf(float x, float y)
  * else
  *     return i;
  */
-static int64_t
+static int_least64_t
 dulpval(double x)
 {
-    const int64_t mask = ((uint64_t)1 << 63) - 1;
-    union {double f64; int64_t i64;} word = {x};
+    const int_least64_t mask = ((uint_least64_t)1 << 63) - 1;
+    union {double f64; int_least64_t i64;} word = {x};
     return -(word.i64 < 0) ^ (word.i64 & mask);
 }
 
 
-static int32_t
+static int_least32_t
 dulpvalf(float x)
 {
-    const int32_t mask = ((uint32_t)1 << 31) - 1;
-    union {float f32; int32_t i32;} word = {x};
+    const int_least32_t mask = ((uint_least32_t)1 << 31) - 1;
+    union {float f32; int_least32_t i32;} word = {x};
     return -(word.i32 < 0) ^ (word.i32 & mask);
 }
 
@@ -144,34 +145,34 @@ dulpvalf(float x)
  * 32-bit parts and recombine them as doubles.
  */
 static double
-dulpdif(int64_t valx, int64_t valy)
+dulpdif(int_least64_t valx, int_least64_t valy)
 {
-    const int64_t shift = 32;
-    const int64_t mask = ((int64_t)1 << shift) - 1;
+    const int shift = 32;
+    const int_least64_t mask = ((int_least64_t)1 << shift) - 1;
     const double scale = mask + 1;
-    int64_t hi = dulpsar(valy, shift) - dulpsar(valx, shift);
-    int64_t lo = (valy & mask) - (valx & mask);
+    int_least64_t hi = dulpsar(valy, shift) - dulpsar(valx, shift);
+    int_least64_t lo = (valy & mask) - (valx & mask);
     return scale*hi + lo;
 }
 
 
 static double
-dulpdiff(int32_t valx, int32_t valy)
+dulpdiff(int_least32_t valx, int_least32_t valy)
 {
-    return (int64_t)valy - valx;
+    return (int_least64_t)valy - valx;
 }
 
 
 /*
- * Portable arithmetic right shift for dulpdif.
+ * Portable arithmetic right shift
  * From github.com/Rupt/c-arithmetic-right-shift
  */
-static int64_t
-dulpsar(int64_t m, uint_fast8_t n)
+static int_least64_t
+dulpsar(int_least64_t m, uint_fast8_t n)
 {
-    const int logical = (((int64_t)-1) >> 1) > 0;
-    uint64_t fixu = -(logical & (m < 0));
+    const int logical = (((int_least64_t)-1) >> 1) > 0;
+    uint_least64_t fixu = -(logical & (m < 0));
     /* Cast type punning is defined for signed/unsigned pairs */
-    int64_t fix = *(int64_t*)&fixu;
+    int_least64_t fix = *(int_least64_t*)&fixu;
     return (m >> n) | (fix ^ (fix >> n));
 }
