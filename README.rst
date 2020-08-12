@@ -1,6 +1,6 @@
 
 Floating point differences --- dulp
-================================
+===================================
 
 `dulp`_ measures directed differences between floating point numbers by
 counting the discrete spaces between them.
