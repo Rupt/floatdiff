@@ -61,7 +61,6 @@ static double dulpdiff(int32_t valx, int32_t valy);
 static int64_t dulpsar(int64_t m, uint_fast8_t n);
 
 
-
 /*
  * Bits-equivalent of dulp distance delta.
  *
@@ -115,10 +114,10 @@ dulpf(float x, float y)
  * leaving others unchanged.
  *
  * Equivalent to
- * if (i64 < 0)
- *     return -((uint64_t)1 << 63) - i64 - 1;
+ * if (i < 0)
+ *     return -((uint)1 << (bits - 1)) - i - 1;
  * else
- *     return i64;
+ *     return i;
  */
 static int64_t
 dulpval(double x)
