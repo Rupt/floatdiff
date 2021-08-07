@@ -19,7 +19,7 @@
  * Each float or double gets an integer valuation val(x) which satisfies
  *     val(0.) == 0
  * and
- *     val(x, x + eps) == 1
+ *     val(x + eps) == val(x) + 1
  * where x + eps is the next floating point number after x.
  *
  * Floats almost have this naturally when reinterpreted as integers,
@@ -86,7 +86,7 @@ dulpbits(double delta)
  *
  * Please cast to float for increased memory performance.
  */
-static double
+static inline double
 dulp(double x, double y)
 {
     int64_t valx = dulpval(x);
@@ -95,7 +95,7 @@ dulp(double x, double y)
 }
 
 
-static double
+static inline double
 dulpf(float x, float y)
 {
     int32_t valx = dulpvalf(x);
@@ -117,7 +117,7 @@ dulpf(float x, float y)
  * else
  *     return i;
  */
-static int64_t
+static inline int64_t
 dulpval(double x)
 {
     const int64_t mask = (1llu << 63) - 1;
@@ -126,7 +126,7 @@ dulpval(double x)
 }
 
 
-static int32_t
+static inline int32_t
 dulpvalf(float x)
 {
     const int32_t mask = (1lu << 31) - 1;
@@ -141,7 +141,7 @@ dulpvalf(float x)
  * Lacking signed types larger than 64 bits, we split into high and low
  * 32-bit parts and recombine them as doubles.
  */
-static double
+static inline double
 dulpdif(int64_t valx, int64_t valy)
 {
     const int shift = 32;
@@ -153,7 +153,7 @@ dulpdif(int64_t valx, int64_t valy)
 }
 
 
-static double
+static inline double
 dulpdiff(int32_t valx, int32_t valy)
 {
     return (int64_t) valy - valx;
@@ -164,7 +164,7 @@ dulpdiff(int32_t valx, int32_t valy)
  * Portable arithmetic right shift
  * From github.com/Rupt/c-arithmetic-right-shift
  */
-static int64_t
+static inline int64_t
 dulpsar(int64_t m, char n)
 {
     const int logical = (-1llu >> 1) > 0;
