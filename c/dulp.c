@@ -43,23 +43,21 @@
  *     fabs, log2
  *
  * stdint.h
- *     int_least32_t int_least64_t
- *     uint_least32_t uint_least64_t
- *     uint_fast8_t
+ *     int64_t, int32_t
  */
 
-static double dulpbits(double delta);
+static inline double dulpbits(double delta);
 
 static double dulp(double x, double y);
 static double dulpf(float x, float y);
 
-static int_least64_t dulpval(double x);
-static int_least32_t dulpvalf(float x);
+static int64_t dulpval(double x);
+static int32_t dulpvalf(float x);
 
-static double dulpdif(int_least64_t valx, int_least64_t valy);
-static double dulpdiff(int_least32_t valx, int_least32_t valy);
+static double dulpdif(int64_t valx, int64_t valy);
+static double dulpdiff(int32_t valx, int32_t valy);
 
-static int_least64_t dulpsar(int_least64_t m, uint_fast8_t n);
+static int64_t dulpsar(int64_t m, char n);
 
 
 /*
@@ -73,11 +71,10 @@ static int_least64_t dulpsar(int_least64_t m, uint_fast8_t n);
  *     3 < bits(0b1000) < 4          (0b1000 == 8)
  * and so on.
  */
-static double
+static inline double
 dulpbits(double delta)
 {
-    double distance = fabs(delta);
-    return log2(distance + 1.);
+    return log2(fabs(delta) + 1.);
 }
 
 
@@ -92,8 +89,8 @@ dulpbits(double delta)
 static double
 dulp(double x, double y)
 {
-    int_least64_t valx = dulpval(x);
-    int_least64_t valy = dulpval(y);
+    int64_t valx = dulpval(x);
+    int64_t valy = dulpval(y);
     return dulpdif(valx, valy);
 }
 
@@ -101,8 +98,8 @@ dulp(double x, double y)
 static double
 dulpf(float x, float y)
 {
-    int_least32_t valx = dulpvalf(x);
-    int_least32_t valy = dulpvalf(y);
+    int32_t valx = dulpvalf(x);
+    int32_t valy = dulpvalf(y);
     return dulpdiff(valx, valy);
 }
 
@@ -111,29 +108,29 @@ dulpf(float x, float y)
  * Integer valuations of double and float.
  *
  * The binary representation naturally has negative numbers in reverse.
- * This bit-twiddle reverses the order of negative values again, while
- * leaving others unchanged.
+ * This bit-twiddle re-reverses the order of negative values, while leaving
+ * others unchanged.
  *
  * Equivalent to
  * if (i < 0)
- *     return -((uint)1 << (bits - 1)) - i - 1;
+ *     return -((uint) 1 << (bits - 1)) - i - 1;
  * else
  *     return i;
  */
-static int_least64_t
+static int64_t
 dulpval(double x)
 {
-    const int_least64_t mask = ((uint_least64_t)1 << 63) - 1;
-    union {double f64; int_least64_t i64;} word = {x};
+    const int64_t mask = (1llu << 63) - 1;
+    union {double f64; int64_t i64;} word = {x};
     return -(word.i64 < 0) ^ (word.i64 & mask);
 }
 
 
-static int_least32_t
+static int32_t
 dulpvalf(float x)
 {
-    const int_least32_t mask = ((uint_least32_t)1 << 31) - 1;
-    union {float f32; int_least32_t i32;} word = {x};
+    const int32_t mask = (1lu << 31) - 1;
+    union {float f32; int32_t i32;} word = {x};
     return -(word.i32 < 0) ^ (word.i32 & mask);
 }
 
@@ -145,21 +142,21 @@ dulpvalf(float x)
  * 32-bit parts and recombine them as doubles.
  */
 static double
-dulpdif(int_least64_t valx, int_least64_t valy)
+dulpdif(int64_t valx, int64_t valy)
 {
     const int shift = 32;
-    const int_least64_t mask = ((int_least64_t)1 << shift) - 1;
+    const int64_t mask = (1llu << shift) - 1;
     const double scale = mask + 1;
-    int_least64_t hi = dulpsar(valy, shift) - dulpsar(valx, shift);
-    int_least64_t lo = (valy & mask) - (valx & mask);
+    int64_t hi = dulpsar(valy, shift) - dulpsar(valx, shift);
+    int64_t lo = (valy & mask) - (valx & mask);
     return scale*hi + lo;
 }
 
 
 static double
-dulpdiff(int_least32_t valx, int_least32_t valy)
+dulpdiff(int32_t valx, int32_t valy)
 {
-    return (int_least64_t)valy - valx;
+    return (int64_t) valy - valx;
 }
 
 
@@ -167,12 +164,12 @@ dulpdiff(int_least32_t valx, int_least32_t valy)
  * Portable arithmetic right shift
  * From github.com/Rupt/c-arithmetic-right-shift
  */
-static int_least64_t
-dulpsar(int_least64_t m, uint_fast8_t n)
+static int64_t
+dulpsar(int64_t m, char n)
 {
-    const int logical = (((int_least64_t)-1) >> 1) > 0;
-    uint_least64_t fixu = -(logical & (m < 0));
+    const int logical = (-1llu >> 1) > 0;
+    uint64_t fixu = -(logical & (m < 0));
     /* Cast type punning is defined for signed/unsigned pairs */
-    int_least64_t fix = *(int_least64_t*)&fixu;
+    int64_t fix = *(int64_t*) &fixu;
     return (m >> n) | (fix ^ (fix >> n));
 }
