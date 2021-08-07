@@ -63,7 +63,7 @@ static inline int64_t dulpsar(int64_t m, char n);
 /*
  * Bits-equivalent of dulp distance delta.
  *
- * The form log2(|delta| + 1) satisfies
+ * Specified such that
  *     bits(0) == 0
  *     bits(1) == 1
  *     bits(0b111) == 3               (0b111 == 7)
@@ -81,10 +81,8 @@ dulpbits(double delta)
 /*
  * Directed distances for double and float.
  *
- * Returns double since 53 bits of precision are plenty, and inexact
- * representations allow signed differences between 64 bit numbers.
- *
- * Please cast to float for increased memory performance.
+ * Returns double since 53 bits of precision are plenty, and the inexact
+ * representation allows signed differences between 64 bit integers.
  */
 static inline double
 dulp(double x, double y)
