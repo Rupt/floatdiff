@@ -48,16 +48,16 @@
 
 static inline double dulpbits(double delta);
 
-static double dulp(double x, double y);
-static double dulpf(float x, float y);
+static inline double dulp(double x, double y);
+static inline double dulpf(float x, float y);
 
-static int64_t dulpval(double x);
-static int32_t dulpvalf(float x);
+static inline int64_t dulpval(double x);
+static inline int32_t dulpvalf(float x);
 
-static double dulpdif(int64_t valx, int64_t valy);
-static double dulpdiff(int32_t valx, int32_t valy);
+static inline double dulpdif(int64_t valx, int64_t valy);
+static inline double dulpdiff(int32_t valx, int32_t valy);
 
-static int64_t dulpsar(int64_t m, char n);
+static inline int64_t dulpsar(int64_t m, char n);
 
 
 /*
