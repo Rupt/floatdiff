@@ -1,8 +1,8 @@
 
-Floating point differences --- dulp
+Floating point differences
 ===================================
 
-`dulp`_ measures directed differences between floating point numbers by
+`floatdiff`_ measures directed differences between floating point numbers by
 counting the discrete spaces between them.
 
 
@@ -13,52 +13,50 @@ This distance was proposed by an anonymous reviewer to
 
 .. code-block:: python
 
-    from dulp import dulp
+    from floatdiff import floatdiff
 
-    dulp(1., 1. + 2.**-52) # 1.
-    dulp((1. + 5**0.5)/2, 1.6180339887) # -224707.
-    dulp(-0., 0.) # 1.
+    floatdiff(1., 1. + 2.**-52) # 1.
+    floatdiff((1. + 5**0.5)/2, 1.6180339887) # -224707.
+    floatdiff(-0., 0.) # 1.
 
 
-**Numpy**
+**numpy**
 
 .. code-block:: python
 
-    from dulp.np import dulp
+    from floatdiff_numpy import floatdiff
     from numpy import float32
 
-    dulp(1., [1. + 2.**-52, 1. + 2.**-50]) # array([1., 4.])
-    dulp(float32((1 + 5**0.5)/2), float32(1.6180339887)) # 0.
-    dulp(-0., float32(0.)) # TypeError
+    floatdiff(1., [1. + 2.**-52, 1. + 2.**-50]) # array([1., 4.])
+    floatdiff(float32((1 + 5**0.5)/2), float32(1.6180339887)) # 0.
+    floatdiff(-0., float32(0.)) # TypeError
 
 
-**C**
+**c**
 
-.. code-block:: C
+.. code-block:: c
 
     #include <stdint.h>
-    #include "dulp.c"
+    #include "floatdiff.c"
 
-    dulp(1., 1. + pow(2, -52)); /* 1. */
-    dulp((1. + sqrt(5))/2, 1.6180339887); /* -224707. */
-    dulpf(-0., 0.) /* 1.f */
+    floatdiff(1., 1. + pow(2, -52)); /* 1. */
+    floatdiff((1. + sqrt(5))/2, 1.6180339887); /* -224707. */
+    floatdifff(-0., 0.) /* 1.f */
 
 Details
 -------
 
-Each float or double gets an integer valuation ``val(x)`` satisfying
+Each float or double gets an integer valuation ``rank(x)`` satisfying
 
 .. code-block:: python
 
-    val(0.) == 0 # True
+    rank(0.) == 0 # True
 
 and
 
 .. code-block:: python
 
-    val(x + eps) == val(x) + 1 # True
-
-where x + eps is the next floating point number after x.
+    rank(nextafter(x)) == rank(x) + 1 # True .
 
 Floats almost have this naturally when reinterpreted as integers,
 but are reversed for negative numbers.
@@ -68,11 +66,11 @@ Then
 
 .. code-block:: python
 
-    dulp(x, y) == float(val(y) - val(x)) # True
+    floatdiff(x, y) == float(rank(y) - rank(x)) # True
 
 casted to floating point for convenience with small and large distances.
 
-A bits-precision equivalent conversion is given by ``dulpbits``.
+A bits-precision equivalent conversion is given by ``bits``.
 
 
-.. _`dulp`: https://github.com/Rupt/dulp
+.. _`floatdiff`: https://github.com/Rupt/floatdiff
