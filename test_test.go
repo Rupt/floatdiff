@@ -4,14 +4,19 @@
 package floatdiff
 
 import (
+	"math"
 	"testing"
 )
 
 func TestBits(t *testing.T) {
-	a := Bits(3)
-	if a != 2 {
-		t.Errorf("Bits(3) == %f; want 2", a)
+	check := func(x, want float64) {
+		out := Bits(x)
+		if out != want {
+			t.Errorf("Bits(%g) != %g; got %g", x, want, out)
+		}
 	}
+
+	check(1-math.Pow(2, -53), 1)
 }
 
 func TestFloatdiff(t *testing.T) {

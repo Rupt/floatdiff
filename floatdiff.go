@@ -19,14 +19,14 @@ func Floatdiff(x, y float64) float64 {
 
 func Rank(x float64) int64 {
 	const mask = (1 << 63) - 1
-	bits = math.Float64Bits(x)
-	return float32(-(bits < 0) ^ (bits & mask))
+	ibits := int64(math.Float64bits(x))
+	return -int64(ibool(ibits < 0)) ^ (ibits & mask)
 }
 
 func Rank32(x float32) int32 {
 	const mask = (1 << 31) - 1
-	bits = math.Float32Bits(x)
-	return float32(-(bits < 0) ^ (bits & mask))
+	ibits := int32(math.Float32bits(x))
+	return -int32(ibool(ibits < 0)) ^ (ibits & mask)
 }
 
 func Diff(valx, valy int64) float64 {
@@ -35,9 +35,16 @@ func Diff(valx, valy int64) float64 {
 	const mask = (1 << 32) - 1
 	hi := (valx >> shift) - (valy >> shift)
 	lo := (valy & mask) - (valx & mask)
-	return scale*hi + lo
+	return scale*float64(hi) + float64(lo)
 }
 
-func Diff32(valx, valy int32) float32 {
+func Diff32(valx, valy int32) float64 {
 	return float64(int64(valy) - int64(valx))
+}
+
+func ibool(b bool) int {
+	if b {
+		return 1
+	}
+	return 0
 }
