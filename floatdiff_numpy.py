@@ -18,10 +18,11 @@ Each float gets an integer valuation rank(x) which satisfies:
 
 >>> rank(0.) == 0 # True
 
->>> rank(nextafter(x)) == rank(x) + 1 # True
+>>> rank(nextafter(x)) == rank(x) + 1 # True .
 
 Floats almost have this naturally when reinterpreted as integers,
 but are reversed for negative numbers.
+
 We just reverse negative numbers' order.
 
 The floatdiff(x, y) directed distance from x to y equals rank(y) - rank(x),
@@ -29,9 +30,7 @@ casted to float for convenience with small and large distances.
 
 A bits-precision equivalent conversion is given by bits(...).
 
-This optional module uses numpy types and broadcasting features.
-
-Assumes IEEE 764 binary64 and binary32 for float64s and float32s.
+Assumes IEEE 754 binary64 and binary32 for float64 and float32.
 """
 from numpy import asanyarray
 from numpy import absolute, log2

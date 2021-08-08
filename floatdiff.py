@@ -17,10 +17,11 @@ Each float gets an integer valuation rank(x) which satisfies:
 
 >>> rank(0.) == 0 # True
 
->>> rank(nextafter(x)) == rank(x) + 1 # True
+>>> rank(nextafter(x)) == rank(x) + 1 # True .
 
 Floats almost have this naturally when reinterpreted as integers,
 but are reversed for negative numbers.
+
 We just reverse negative numbers' order.
 
 The floatdiff(x, y) directed distance from x to y equals rank(y) - rank(x),
@@ -28,7 +29,7 @@ as a float for coverage of small and large distances.
 
 A bits-precision equivalent conversion is given by bits(...).
 
-Assumes IEEE 764 binary64 for floats.
+Assumes IEEE 754 binary64 for float.
 """
 from ctypes import Union, c_double, c_longlong
 from math import log2

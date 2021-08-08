@@ -21,6 +21,7 @@
  *
  * Floats almost have this naturally when reinterpreted as integers,
  * but are reversed for negative numbers.
+ *
  * We just reverse negative numbers' order.
  *
  * The directed distance from x to y equals rank(y) - rank(x), in double
@@ -28,7 +29,7 @@
  *
  * floatdiff_bits converts the distance to a bits-precision equivalent.
  *
- * Assumes IEEE 764 binary64 and binary32 for doubles and floats.
+ * Assumes IEEE 754 binary64 and binary32 for double and float.
  *
  * Context:
  *
