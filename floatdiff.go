@@ -33,6 +33,7 @@ func Diff(valx, valy int64) float64 {
 	const shift = 32
 	const scale = 1 << 32
 	const mask = (1 << 32) - 1
+
 	hi := (valx >> shift) - (valy >> shift)
 	lo := (valy & mask) - (valx & mask)
 	return scale*float64(hi) + float64(lo)
@@ -42,9 +43,9 @@ func Diff32(valx, valy int32) float64 {
 	return float64(int64(valy) - int64(valx))
 }
 
-func ibool(b bool) int {
+func ibool(b bool) (i int) {
 	if b {
-		return 1
+		i++
 	}
-	return 0
+	return
 }
