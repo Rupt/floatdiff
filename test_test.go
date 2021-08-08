@@ -9,15 +9,46 @@ import (
 )
 
 func TestBits(t *testing.T) {
-	check := func(x, want float64) {
-		out := Bits(x)
-		if out != want {
-			t.Errorf("Bits(%g) != %g; got %g", x, want, out)
+	// equality checks
+	check_eq := [][]float64{
+		{0, 0},
+		{1, 1},
+		{7, 3},
+		{Floatdiff(.5, .7), Bits(Floatdiff(.7, .5))},
+	}
+
+	for _, pair := range check_eq {
+		x, want := pair[0], pair[1]
+		got := Bits(x)
+		if got != want {
+			t.Errorf("Bits(%g) != %g; got %g", x, want, got)
 		}
 	}
 
-	check(1-math.Pow(2, -53), 1)
-}
+	// inequality checks (down)
+	check_lt := [][]float64{
+		{8, 4},
+		{Floatdiff(math.Inf(-1), math.Inf(+1)), 64},
+	}
 
-func TestFloatdiff(t *testing.T) {
+	for _, pair := range check_lt {
+		x, want := pair[0], pair[1]
+		got := Bits(x)
+		if !(got < want) {
+			t.Errorf("!(Bits(%g) < %g); got %g", x, want, got)
+		}
+	}
+
+	// inequality checks (up)
+	check_gt := [][]float64{
+		{8, 3},
+	}
+
+	for _, pair := range check_gt {
+		x, want := pair[0], pair[1]
+		got := Bits(x)
+		if !(got > want) {
+			t.Errorf("!(Bits(%g) > %g); got %g", x, want, got)
+		}
+	}
 }
