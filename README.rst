@@ -1,4 +1,3 @@
-
 Floating point differences
 ===================================
 
@@ -9,7 +8,7 @@ counting the discrete spaces between them.
 This distance was proposed by an anonymous reviewer to
 *"On the definition of ulp(x)"* (JM Muller 2005).
 
-**Python**
+**python**
 
 .. code-block:: python
 
