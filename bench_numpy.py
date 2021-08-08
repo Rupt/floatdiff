@@ -1,9 +1,9 @@
-"""WIP benchmark for numpy version
+"""
+Benchmark for numpy version
 
 python -m timeit -vv -s "from bench_numpy import bench" "bench()"
 
 python -m timeit -vv -s "from bench_numpy import benchf" "benchf()"
-
 
 """
 import numpy

@@ -1,9 +1,10 @@
-"""Run tests on dulp.py"""
+""" Run tests on dulp.py """
 from math import inf, nan
 import unittest
 import sys
 
 from dulp import dulp, val, dif, bits
+
 
 f64max = sys.float_info.max
 f64min = sys.float_info.min
@@ -79,7 +80,6 @@ class TestREADME(unittest.TestCase):
         self.assertEqual(dulp(1., 1. + 2**-52), 1.)
         self.assertEqual(dulp((1 + 5**0.5)/2, 1.6180339887), -224707.)
         self.assertEqual(dulp(-0., 0.), 1.)
-
 
 
 if __name__ == "__main__":

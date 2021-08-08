@@ -8,6 +8,7 @@ from numpy import int32, int64
 
 from dulp_numpy import dulp, val, dif, bits
 
+
 f64max = numpy.finfo(float64).max
 f64min = numpy.finfo(float64).tiny
 f32max = numpy.finfo(float32).max
@@ -16,6 +17,7 @@ i64max = int64(numpy.iinfo(int64).max)
 i64min = int64(numpy.iinfo(int64).min)
 i32max = int32(numpy.iinfo(int32).max)
 i32min = int32(numpy.iinfo(int32).min)
+
 
 class TestDulp(unittest.TestCase):
     def test_type(self):

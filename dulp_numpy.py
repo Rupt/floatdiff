@@ -1,4 +1,5 @@
-"""Floating point differences --- dulp (numpy module)
+"""
+Floating point differences --- dulp (numpy module)
 
 dulp measures directed differences between floating point numbers by
 counting the discrete spaces between them.
@@ -13,28 +14,22 @@ This distance was proposed by an anonymous reviewer to
 >>> dulp(float32((1 + 5**0.5)/2), float32(1.6180339887)) # 0.
 >>> dulp(-0., float32(0.)) # TypeError
 
-
-Each float gets an integer valuation val(x) which satisfies
+Each float gets an integer valuation val(x) which satisfies:
 
 >>> val(0.) == 0 # True
 
->>> val(x + eps) == val(x) + 1 # True
-
-where x + eps is the next floating point number after x.
+>>> val(nextafter(x)) == val(x) + 1 # True
 
 Floats almost have this naturally when reinterpreted as integers,
 but are reversed for negative numbers.
 We just reverse negative numbers' order.
-
 
 The dulp(x, y) directed distance from x to y equals val(y) - val(x),
 casted to float for convenience with small and large distances.
 
 A bits-precision equivalent conversion is given by dulpbits.
 
-
 This optional module uses numpy types and broadcasting features.
-
 
 Assumes IEEE 764 binary64 and binary32 for float64s and float32s.
 """

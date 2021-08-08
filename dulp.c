@@ -19,23 +19,19 @@
  * Each float or double gets an integer valuation val(x) which satisfies
  *     val(0.) == 0
  * and
- *     val(x + eps) == val(x) + 1
- * where x + eps is the next floating point number after x.
+ *     val(nextafter(x)) == val(x) + 1
  *
  * Floats almost have this naturally when reinterpreted as integers,
  * but are reversed for negative numbers.
  * We just reverse negative numbers' order.
  *
- *
  * The dulp directed distance from x to y equals val(y) - val(x), in
  * double precision for convenience with small and large distances.
- *
  *
  * dulpbits converts the dulp distance to a bits-precision equivalent.
  *
  *
  * Assumes IEEE 764 binary64 and binary32 for doubles and floats.
- *
  *
  * Context:
  *
