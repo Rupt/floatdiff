@@ -7,7 +7,6 @@ python -m timeit -vv -s "from bench_numpy import benchf" "benchf()"
 
 """
 import numpy
-from dulp_numpy import dulp
 
 
 def init():

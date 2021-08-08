@@ -14,20 +14,20 @@ This distance was proposed by an anonymous reviewer to
 >>> floatdiff(float32((1 + 5**0.5)/2), float32(1.6180339887)) # 0.
 >>> floatdiff(-0., float32(0.)) # TypeError
 
-Each float gets an integer valuation val(x) which satisfies:
+Each float gets an integer valuation rank(x) which satisfies:
 
->>> val(0.) == 0 # True
+>>> rank(0.) == 0 # True
 
->>> val(nextafter(x)) == val(x) + 1 # True
+>>> rank(nextafter(x)) == rank(x) + 1 # True
 
 Floats almost have this naturally when reinterpreted as integers,
 but are reversed for negative numbers.
 We just reverse negative numbers' order.
 
-The floatdiff(x, y) directed distance from x to y equals val(y) - val(x),
+The floatdiff(x, y) directed distance from x to y equals rank(y) - rank(x),
 casted to float for convenience with small and large distances.
 
-A bits-precision equivalent conversion is given by dulpbits.
+A bits-precision equivalent conversion is given by bits(...).
 
 This optional module uses numpy types and broadcasting features.
 
@@ -68,9 +68,9 @@ def floatdiff(x, y):
         raise TypeError("%s is not %s" % (x.dtype, y.dtype))
 
     if x.dtype.type is float64:
-        delta = _dulp(x, y)
+        delta = _floatdiff(x, y)
     elif x.dtype.type is float32:
-        delta = _dulpf(x, y)
+        delta = _floatdifff(x, y)
     else:
         raise TypeError("%s not in (float64, float32)" % x.dtype)
 
@@ -97,7 +97,7 @@ def rank(x):
 def diff(valx, valy):
     """ Return the (broadcasted) difference from valx to valy.
 
-        Inputs valx and valy must be int32 or int64, as returned by val(x).
+        Inputs valx and valy must be int32 or int64, as returned by rank(x).
     """
     valx = asanyarray(valx)
     valy = asanyarray(valy)
@@ -115,14 +115,14 @@ def diff(valx, valy):
     return delta
 
 
-def _dulp(x, y):
+def _floatdiff(x, y):
     """ Return the order distance from float64 x to float64 y """
     valx = _rank(x)
     valy = _rank(y)
     return _diff(valx, valy)
 
 
-def _dulpf(x, y):
+def _floatdifff(x, y):
     """ Return the order distance from float32 x to float32 y """
     valx = _rankf(x)
     valy = _rankf(y)

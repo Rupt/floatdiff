@@ -24,18 +24,18 @@ test-c: test.c floatdiff.c
 
 bench-numpy:
 	python -m timeit -vv -s "\
-	from dulp_numpy import dulp; \
+	from floatdiff_numpy import floatdiff; \
 	from bench_numpy import init; \
 	x, y = init()" \
-	"dulp(x, y)"
+	"floatdiff(x, y)"
 
 
 bench-numpyf:
 	python -m timeit -vv -s "\
-	from dulp_numpy import dulp; \
+	from floatdiff_numpy import floatdiff; \
 	from bench_numpy import initf; \
 	x, y = initf()" \
-	"dulp(x, y)"
+	"floatdiff(x, y)"
 
 
 bench: bench-numpy bench-numpyf
@@ -57,7 +57,7 @@ clean:
 
 lint:
 	# with a grain of salt
-	pylint dulp $(PYLINTFLAGS)
+	pylint floatdiff $(PYLINTFLAGS)
 
 .PHONY: options clean lint
 
