@@ -6,7 +6,7 @@ from numpy import inf, nan
 from numpy import float32, float64
 from numpy import int32, int64
 
-from np import dulp, val, dif, bits
+from dulp_numpy import dulp, val, dif, bits
 
 f64max = numpy.finfo(float64).max
 f64min = numpy.finfo(float64).tiny

@@ -45,25 +45,26 @@ from numpy import int32, int64
 
 
 def bits(delta):
-    """Return a (broadcasted) bits-equivalent of dulp distance delta.
+    """ Return a (broadcasted) bits-equivalent of dulp distance delta.
 
-    The form log2(|delta| + 1) satisfies
-        bits(0) == 0
-        bits(1) == 1
-        bits(0b111) == 3               (0b111 == 7)
-    with interpolation such that
-        3 < bits(0b1000) < 4          (0b1000 == 8)
-    and so on.
+        The form log2(|delta| + 1) satisfies
+            bits(0) == 0
+            bits(1) == 1
+            bits(0b111) == 3               (0b111 == 7)
+        with interpolation such that
+            3 < bits(0b1000) < 4          (0b1000 == 8)
+        and so on.
     """
     delta = asanyarray(delta)
     distance = absolute(delta)
-    return log2(distance + 1.)
+    distance += 1
+    return log2(distance)
 
 
 def dulp(x, y):
-    """Return the (broadcasted) order difference from x to y.
+    """ Return the (broadcasted) order difference from x to y.
 
-    Inputs x and y must be both float32 or both float64.
+        Inputs x and y must be both float32 or both float64.
     """
     x = asanyarray(x)
     y = asanyarray(y)
@@ -82,9 +83,9 @@ def dulp(x, y):
 
 
 def val(x):
-    """Return an integer (broadcasted) valuation of x.
+    """ Return an integer (broadcasted) valuation of x.
 
-    Input x must be float32 or float64.
+        Input x must be float32 or float64.
     """
     x = asanyarray(x)
 
@@ -99,9 +100,9 @@ def val(x):
 
 
 def dif(valx, valy):
-    """Return the (broadcasted) difference from valx to valy.
+    """ Return the (broadcasted) difference from valx to valy.
 
-    Inputs valx and valy must be int32 or int64, as returned by val(x).
+        Inputs valx and valy must be int32 or int64, as returned by val(x).
     """
     valx = asanyarray(valx)
     valy = asanyarray(valy)
@@ -120,21 +121,21 @@ def dif(valx, valy):
 
 
 def _dulp(x, y):
-    "Return the order distance from float64 x to float64 y"
+    """ Return the order distance from float64 x to float64 y """
     valx = _val(x)
     valy = _val(y)
     return _dif(valx, valy)
 
 
 def _dulpf(x, y):
-    "Return the order distance from float32 x to float32 y"
+    """ Return the order distance from float32 x to float32 y """
     valx = _valf(x)
     valy = _valf(y)
     return _diff(valx, valy)
 
 
 def _val(x):
-    "Return an integer valuation of float64 x"
+    """ Return an integer valuation of float64 x """
     shift = int64(63)
     mask = int64((1 << 63) - 1)
     i64 = x.view(int64)
@@ -145,7 +146,7 @@ def _val(x):
 
 
 def _valf(x):
-    "Return an integer valuation of float32 x"
+    """ Return an integer valuation of float32 x """
     shift = int32(31)
     mask = int32((1 << 31) - 1)
     i32 = x.view(int32)
@@ -156,7 +157,7 @@ def _valf(x):
 
 
 def _dif(valx, valy):
-    "Return the valuation difference from int64 valx to int64 valy"
+    """ Return the valuation difference from int64 valx to int64 valy """
     shift = int64(32)
     mask = int64((1 << 32) - 1)
     scale = float64(mask + 1)
@@ -164,10 +165,12 @@ def _dif(valx, valy):
     hi -= valx >> shift
     lo = valy & mask
     lo -= valx & mask
-    return scale*hi + lo
+    out = scale * hi
+    out += lo
+    return out
 
 
 def _diff(valx, valy):
-    "Return the valuation difference from int32 valx to int32 valy"
+    """ Return the valuation difference from int32 valx to int32 valy """
     delta = valy.astype(int64) - valx
     return delta.astype(float64)
