@@ -1,8 +1,8 @@
 /*
  * Floating point differences
  *
- * Measure directed differences between floating point numbers by counting the
- * discrete spaces between them.
+ * Measure directed differences between floating point numbers by enumerating
+ * the discrete spaces between them.
  *
  * This distance was proposed by an anonymous reviewer to
  * "On the definition of ulp(x)" (JM Muller 2005).
@@ -24,7 +24,7 @@
  * We just reverse negative numbers' order.
  *
  * The directed distance from x to y equals rank(y) - rank(x), in double
- * precision for convenience with small and large distances.
+ * precision for coverage of small and large distances.
  *
  * floatdiff_bits converts the distance to a bits-precision equivalent.
  *

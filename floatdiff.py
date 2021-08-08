@@ -1,32 +1,32 @@
 """
-Floating point differences --- dulp
+Floating point differences
 
-dulp measures directed differences between floating point numbers by
-counting the discrete spaces between them.
+Measure directed differences between floating point numbers by enumerating the
+discrete spaces between them.
 
 This distance was proposed by an anonymous reviewer to
 *"On the definition of ulp(x)"* (JM Muller 2005).
 
->>> from dulp import dulp
+>>> from floatdiff import floatdiff
 >>>
->>> dulp(1., 1. + 2.**-52) # 1.
->>> dulp((1. + 5**0.5)/2, 1.6180339887) # -224707.
->>> dulp(-0., 0.) # 1.
+>>> floatdiff(1., 1. + 2.**-52) # 1.
+>>> floatdiff((1. + 5**0.5)/2, 1.6180339887) # -224707.
+>>> floatdiff(-0., 0.) # 1.
 
-Each float gets an integer valuation val(x) which satisfies:
+Each float gets an integer valuation rank(x) which satisfies:
 
->>> val(0.) == 0 # True
+>>> rank(0.) == 0 # True
 
->>> val(nextafter(x)) == val(x) + 1 # True
+>>> rank(nextafter(x)) == rank(x) + 1 # True
 
 Floats almost have this naturally when reinterpreted as integers,
 but are reversed for negative numbers.
 We just reverse negative numbers' order.
 
-The dulp(x, y) directed distance from x to y equals val(y) - val(x),
-casted to float for convenience with small and large distances.
+The floatdiff(x, y) directed distance from x to y equals rank(y) - rank(x),
+as a float for coverage of small and large distances.
 
-A bits-precision equivalent conversion is given by dulpbits.
+A bits-precision equivalent conversion is given by bits(...).
 
 Assumes IEEE 764 binary64 for floats.
 """
@@ -57,14 +57,14 @@ def bits(delta):
     return log2(distance + 1.)
 
 
-def dulp(x, y):
+def floatdiff(x, y):
     """Return the order difference from x to y."""
-    valx = val(x)
-    valy = val(y)
-    return dif(valx, valy)
+    valx = rank(x)
+    valy = rank(y)
+    return diff(valx, valy)
 
 
-def dif(valx, valy):
+def diff(valx, valy):
     """Return the difference of valuations valx and valy.
 
     Trivial, but included for consistency with other modules.
@@ -72,7 +72,7 @@ def dif(valx, valy):
     return float(valy - valx)
 
 
-def val(x):
+def rank(x):
     """Return an integer valuation of float x."""
     i64 = Word64(f64=x).i64
 

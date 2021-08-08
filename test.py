@@ -1,9 +1,9 @@
-""" Run tests on dulp.py """
+""" Run tests on floatdiff.py """
 from math import inf, nan
 import unittest
 import sys
 
-from dulp import dulp, val, dif, bits
+from floatdiff import floatdiff, rank, diff, bits
 
 
 f64max = sys.float_info.max
@@ -14,49 +14,49 @@ i64min = -(1 << 63)
 
 class TestDulp(unittest.TestCase):
     def test_type(self):
-        self.assertIsInstance(dulp(.5, .7), float)
+        self.assertIsInstance(floatdiff(.5, .7), float)
 
     def test_increment(self):
-        self.assertEqual(dulp(1. - 2**-53, 1.), 1.)
-        self.assertEqual(dulp(1.5, 1.5 + 2**-52), 1.)
-        self.assertEqual(dulp(0., 5e-324), 1.)
-        self.assertEqual(dulp(5e-324, 1e-323), 1.)
-        self.assertEqual(dulp(f64min - 5e-324, f64min), 1.)
-        self.assertEqual(dulp(f64max, inf), 1.)
-        self.assertEqual(dulp(-0., 0.), 1.)
+        self.assertEqual(floatdiff(1. - 2**-53, 1.), 1.)
+        self.assertEqual(floatdiff(1.5, 1.5 + 2**-52), 1.)
+        self.assertEqual(floatdiff(0., 5e-324), 1.)
+        self.assertEqual(floatdiff(5e-324, 1e-323), 1.)
+        self.assertEqual(floatdiff(f64min - 5e-324, f64min), 1.)
+        self.assertEqual(floatdiff(f64max, inf), 1.)
+        self.assertEqual(floatdiff(-0., 0.), 1.)
 
     def test_jump(self):
-        self.assertEqual(dulp(1., 1.5), 2**51.)
+        self.assertEqual(floatdiff(1., 1.5), 2**51.)
 
     def test_asym(self):
-        self.assertEqual(dulp(.5, .7), -dulp(.7, .5))
-        self.assertEqual(dulp(.5, .7), -dulp(-.5, -.7))
+        self.assertEqual(floatdiff(.5, .7), -floatdiff(.7, .5))
+        self.assertEqual(floatdiff(.5, .7), -floatdiff(-.5, -.7))
 
     def test_nan(self):
-        self.assertEqual(dulp(nan, nan), 0.)
+        self.assertEqual(floatdiff(nan, nan), 0.)
 
 
 class TestVal(unittest.TestCase):
     def test_type(self):
-        self.assertIsInstance(val(0.7), int)
+        self.assertIsInstance(rank(0.7), int)
 
     def test_order(self):
-        self.assertLess(val(.5), val(.7))
-        self.assertLess(val(-.3), val(.3))
-        self.assertLess(val(0.), val(5e-324))
-        self.assertLess(val(-inf), val(inf))
+        self.assertLess(rank(.5), rank(.7))
+        self.assertLess(rank(-.3), rank(.3))
+        self.assertLess(rank(0.), rank(5e-324))
+        self.assertLess(rank(-inf), rank(inf))
 
 
 class TestDif(unittest.TestCase):
     def test_type(self):
-        self.assertIsInstance(dif(1, 2), float)
+        self.assertIsInstance(diff(1, 2), float)
 
-    def test_dif(self):
-        self.assertEqual(dif(0, 1), 1.)
-        self.assertEqual(dif(0, i64max), float(i64max))
-        self.assertEqual(dif(i64max, 0), -float(i64max))
-        self.assertEqual(dif(0, i64min), float(i64min))
-        self.assertEqual(dif(i64min, 0), -float(i64min))
+    def test_diff(self):
+        self.assertEqual(diff(0, 1), 1.)
+        self.assertEqual(diff(0, i64max), float(i64max))
+        self.assertEqual(diff(i64max, 0), -float(i64max))
+        self.assertEqual(diff(0, i64min), float(i64min))
+        self.assertEqual(diff(i64min, 0), -float(i64min))
 
 
 class TestBits(unittest.TestCase):
@@ -69,17 +69,17 @@ class TestBits(unittest.TestCase):
         self.assertEqual(bits(7), 3.)
         self.assertLess(bits(8), 4.)
         self.assertGreater(bits(8), 3.)
-        self.assertLess(bits(dulp(-inf, inf)), 64.)
+        self.assertLess(bits(floatdiff(-inf, inf)), 64.)
 
     def test_absolute(self):
-        self.assertEqual(bits(dulp(.5, .7)), bits(dulp(.7, .5)))
+        self.assertEqual(bits(floatdiff(.5, .7)), bits(floatdiff(.7, .5)))
 
 
 class TestREADME(unittest.TestCase):
     def test_readme(self):
-        self.assertEqual(dulp(1., 1. + 2**-52), 1.)
-        self.assertEqual(dulp((1 + 5**0.5)/2, 1.6180339887), -224707.)
-        self.assertEqual(dulp(-0., 0.), 1.)
+        self.assertEqual(floatdiff(1., 1. + 2**-52), 1.)
+        self.assertEqual(floatdiff((1 + 5**0.5)/2, 1.6180339887), -224707.)
+        self.assertEqual(floatdiff(-0., 0.), 1.)
 
 
 if __name__ == "__main__":
