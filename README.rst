@@ -68,7 +68,7 @@ Then
 
     floatdiff(x, y) == float(rank(y) - rank(x)) # True
 
-casted to floating point for convenience with small and large distances.
+uses floating point for coverage of small and large distances.
 
 A bits-precision equivalent conversion is given by ``bits``.
 
