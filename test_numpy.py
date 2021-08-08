@@ -19,6 +19,23 @@ i32max = int32(numpy.iinfo(int32).max)
 i32min = int32(numpy.iinfo(int32).min)
 
 
+class TestBits(unittest.TestCase):
+    def test_type(self):
+        self.assertIs(bits(5.).dtype.type, float64)
+        self.assertIsInstance(bits([5., 8.]), numpy.ndarray)
+
+    def test_bits(self):
+        self.assertEqual(bits(0.), 0.)
+        self.assertEqual(bits(1.), 1.)
+        self.assertEqual(bits(7), 3.)
+        self.assertLess(bits(8), 4.)
+        self.assertGreater(bits(8), 3.)
+        self.assertLess(bits(floatdiff(-inf, inf)), 64.)
+
+    def test_absolute(self):
+        self.assertEqual(bits(floatdiff(.5, .7)), bits(floatdiff(.7, .5)))
+
+
 class TestDulp(unittest.TestCase):
     def test_type(self):
         self.assertIs(floatdiff(.5, .7).dtype.type, float64)
@@ -92,7 +109,7 @@ class TestDulp(unittest.TestCase):
             floatdiff(vec, mat)
 
 
-class TestVal(unittest.TestCase):
+class TestRank(unittest.TestCase):
     def test_type(self):
         self.assertIs(rank(.7).dtype.type, int64)
         self.assertIsInstance(rank([.7]), numpy.ndarray)
@@ -112,7 +129,7 @@ class TestVal(unittest.TestCase):
         self.assertLess(rank(-float32(inf)), rank(float32(inf)))
 
 
-class TestDif(unittest.TestCase):
+class TestDiff(unittest.TestCase):
     def test_type(self):
         self.assertIs(diff(int32(1), int32(2)).dtype.type, float64)
         self.assertIs(diff(int64(1), int64(2)).dtype.type, float64)
@@ -134,24 +151,7 @@ class TestDif(unittest.TestCase):
         self.assertEqual(diff(i32min, int32(0)), -float64(i32min))
 
 
-class TestBits(unittest.TestCase):
-    def test_type(self):
-        self.assertIs(bits(5.).dtype.type, float64)
-        self.assertIsInstance(bits([5., 8.]), numpy.ndarray)
-
-    def test_bits(self):
-        self.assertEqual(bits(0.), 0.)
-        self.assertEqual(bits(1.), 1.)
-        self.assertEqual(bits(7), 3.)
-        self.assertLess(bits(8), 4.)
-        self.assertGreater(bits(8), 3.)
-        self.assertLess(bits(floatdiff(-inf, inf)), 64.)
-
-    def test_absolute(self):
-        self.assertEqual(bits(floatdiff(.5, .7)), bits(floatdiff(.7, .5)))
-
-
-class TestREADME(unittest.TestCase):
+class TestReadme(unittest.TestCase):
     def test_readme(self):
         vec = floatdiff(1., [1. + 2.**-52, 1. + 2.**-50])
         self.assertEqual(vec.shape, (2,))

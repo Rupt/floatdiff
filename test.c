@@ -6,6 +6,22 @@
 
 
 void
+test_bits()
+{
+    /* _bits */
+    assert(floatdiff_bits(0.) == 0.);
+    assert(floatdiff_bits(1.) == 1.);
+    assert(floatdiff_bits(7) == 3.);
+    assert(floatdiff_bits(8) < 4.);
+    assert(floatdiff_bits(8) > 3.);
+    assert(floatdiff_bits(floatdiff(-INFINITY, INFINITY)) < 64.);
+
+    /* absolute */
+    assert(floatdiff_bits(floatdiff(.5, .7)) == floatdiff_bits(floatdiff(.7, .5)));
+}
+
+
+void
 test_floatdiff()
 {
     /* increment */
@@ -26,17 +42,6 @@ test_floatdiff()
 
     /* nan */
     assert(floatdiff(NAN, NAN) == 0.);
-}
-
-
-void
-test_rank()
-{
-    /* order */
-    assert(floatdiff_rank(0.5) < floatdiff_rank(0.7));
-    assert(floatdiff_rank(-0.3) < floatdiff_rank(0.3));
-    assert(floatdiff_rank(0.) < floatdiff_rank(5e-324));
-    assert(floatdiff_rank(-INFINITY) < floatdiff_rank(INFINITY));
 }
 
 
@@ -65,6 +70,17 @@ test_floatdifff()
 
 
 void
+test_rank()
+{
+    /* order */
+    assert(floatdiff_rank(0.5) < floatdiff_rank(0.7));
+    assert(floatdiff_rank(-0.3) < floatdiff_rank(0.3));
+    assert(floatdiff_rank(0.) < floatdiff_rank(5e-324));
+    assert(floatdiff_rank(-INFINITY) < floatdiff_rank(INFINITY));
+}
+
+
+void
 test_rankf()
 {
     /* order */
@@ -72,22 +88,6 @@ test_rankf()
     assert(floatdiff_rankf(-0.3) < floatdiff_rankf(0.3));
     assert(floatdiff_rankf(0.) < floatdiff_rankf(1e-45));
     assert(floatdiff_rankf(-INFINITY) < floatdiff_rankf(INFINITY));
-}
-
-
-void
-test_bits()
-{
-    /* _bits */
-    assert(floatdiff_bits(0.) == 0.);
-    assert(floatdiff_bits(1.) == 1.);
-    assert(floatdiff_bits(7) == 3.);
-    assert(floatdiff_bits(8) < 4.);
-    assert(floatdiff_bits(8) > 3.);
-    assert(floatdiff_bits(floatdiff(-INFINITY, INFINITY)) < 64.);
-
-    /* absolute */
-    assert(floatdiff_bits(floatdiff(.5, .7)) == floatdiff_bits(floatdiff(.7, .5)));
 }
 
 

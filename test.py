@@ -12,6 +12,22 @@ i64max = (1 << 63) - 1
 i64min = -(1 << 63)
 
 
+class TestBits(unittest.TestCase):
+    def test_type(self):
+        self.assertIsInstance(bits(5.), float)
+
+    def test_bits(self):
+        self.assertEqual(bits(0.), 0.)
+        self.assertEqual(bits(1.), 1.)
+        self.assertEqual(bits(7), 3.)
+        self.assertLess(bits(8), 4.)
+        self.assertGreater(bits(8), 3.)
+        self.assertLess(bits(floatdiff(-inf, inf)), 64.)
+
+    def test_absolute(self):
+        self.assertEqual(bits(floatdiff(.5, .7)), bits(floatdiff(.7, .5)))
+
+
 class TestDulp(unittest.TestCase):
     def test_type(self):
         self.assertIsInstance(floatdiff(.5, .7), float)
@@ -36,7 +52,7 @@ class TestDulp(unittest.TestCase):
         self.assertEqual(floatdiff(nan, nan), 0.)
 
 
-class TestVal(unittest.TestCase):
+class TestRank(unittest.TestCase):
     def test_type(self):
         self.assertIsInstance(rank(0.7), int)
 
@@ -47,7 +63,7 @@ class TestVal(unittest.TestCase):
         self.assertLess(rank(-inf), rank(inf))
 
 
-class TestDif(unittest.TestCase):
+class TestDiff(unittest.TestCase):
     def test_type(self):
         self.assertIsInstance(diff(1, 2), float)
 
@@ -59,23 +75,7 @@ class TestDif(unittest.TestCase):
         self.assertEqual(diff(i64min, 0), -float(i64min))
 
 
-class TestBits(unittest.TestCase):
-    def test_type(self):
-        self.assertIsInstance(bits(5.), float)
-
-    def test_bits(self):
-        self.assertEqual(bits(0.), 0.)
-        self.assertEqual(bits(1.), 1.)
-        self.assertEqual(bits(7), 3.)
-        self.assertLess(bits(8), 4.)
-        self.assertGreater(bits(8), 3.)
-        self.assertLess(bits(floatdiff(-inf, inf)), 64.)
-
-    def test_absolute(self):
-        self.assertEqual(bits(floatdiff(.5, .7)), bits(floatdiff(.7, .5)))
-
-
-class TestREADME(unittest.TestCase):
+class TestReadme(unittest.TestCase):
     def test_readme(self):
         self.assertEqual(floatdiff(1., 1. + 2**-52), 1.)
         self.assertEqual(floatdiff((1 + 5**0.5)/2, 1.6180339887), -224707.)
