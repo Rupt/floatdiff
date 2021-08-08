@@ -4,7 +4,7 @@ LDFLAGS=-lm
 PYLINTFLAGS=--exit-zero --score n
 
 
-test: test-c test-py test-numpy
+test: test-c test-py test-numpy test-go
 
 
 test-py: test.py
@@ -19,7 +19,10 @@ test-c: test.c floatdiff.c
 	$(CC) test.c -o $@ $(CFLAGS) $(LDFLAGS)
 	./$@
 
-.PHONY: test test-py test-numpy test-c
+test-go: floatdiff.go test_test.go
+	go test $^
+
+.PHONY: test test-py test-numpy test-c test-go
 
 
 time-numpy:
@@ -58,6 +61,9 @@ clean:
 lint:
 	# with a grain of salt
 	pylint floatdiff $(PYLINTFLAGS)
+
+fmt:
+	go fmt *.go
 
 .PHONY: options clean lint
 
