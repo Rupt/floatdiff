@@ -1,9 +1,9 @@
 """
-Benchmark for numpy version
+Benchmark timing for numpy version
 
-python -m timeit -vv -s "from bench_numpy import bench" "bench()"
+python -m timeit -vv -s "from time_numpy import time" "time()"
 
-python -m timeit -vv -s "from bench_numpy import benchf" "benchf()"
+python -m timeit -vv -s "from time_numpy import timef" "timef()"
 
 """
 import numpy

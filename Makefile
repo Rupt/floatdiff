@@ -22,25 +22,25 @@ test-c: test.c floatdiff.c
 .PHONY: test test-py test-numpy test-c
 
 
-bench-numpy:
+time-numpy:
 	python -m timeit -vv -s "\
 	from floatdiff_numpy import floatdiff; \
-	from bench_numpy import init; \
+	from time_numpy import init; \
 	x, y = init()" \
 	"floatdiff(x, y)"
 
 
-bench-numpyf:
+time-numpyf:
 	python -m timeit -vv -s "\
 	from floatdiff_numpy import floatdiff; \
-	from bench_numpy import initf; \
+	from time_numpy import initf; \
 	x, y = initf()" \
 	"floatdiff(x, y)"
 
 
-bench: bench-numpy bench-numpyf
+time: time-numpy time-numpyf
 
-.PHONY: bench-numpy bench-numpyf bench
+.PHONY: time-numpy time-numpyf time
 
 
 options:
