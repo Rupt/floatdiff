@@ -12,7 +12,11 @@ func Bits(delta float64) float64 {
 }
 
 func Floatdiff(x, y float64) float64 {
-	return Diff(Rank(x), Rank(x))
+	return Diff(Rank(x), Rank(y))
+}
+
+func Floatdiff32(x, y float32) float64 {
+	return Diff32(Rank32(x), Rank32(y))
 }
 
 func Rank(x float64) int64 {
@@ -31,7 +35,7 @@ func Diff(rankx, ranky int64) float64 {
 	const shift = 32
 	const scale = 1 << 32
 	const mask = (1 << 32) - 1
-	hi := (rankx >> shift) - (ranky >> shift)
+	hi := (ranky >> shift) - (rankx >> shift)
 	lo := (ranky & mask) - (rankx & mask)
 	return scale*float64(hi) + float64(lo)
 }
