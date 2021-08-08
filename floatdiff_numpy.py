@@ -93,39 +93,39 @@ def rank(x):
     return value
 
 
-def diff(valx, valy):
-    """ Return the (broadcasted) difference from valx to valy.
+def diff(rankx, ranky):
+    """ Return the (broadcasted) difference from rankx to ranky.
 
-        Inputs valx and valy must be int32 or int64, as returned by rank(x).
+        Inputs rankx and ranky must be int32 or int64, as returned by rank(x).
     """
-    valx = asanyarray(valx)
-    valy = asanyarray(valy)
+    rankx = asanyarray(rankx)
+    ranky = asanyarray(ranky)
 
-    if valx.dtype is not valy.dtype:
-        raise TypeError("%s is not %s" % (valx.dtype, valy.dtype))
+    if rankx.dtype is not ranky.dtype:
+        raise TypeError("%s is not %s" % (rankx.dtype, ranky.dtype))
 
-    if valx.dtype.type is int64:
-        delta = _diff(valx, valy)
-    elif valx.dtype.type is int32:
-        delta = _difff(valx, valy)
+    if rankx.dtype.type is int64:
+        delta = _diff(rankx, ranky)
+    elif rankx.dtype.type is int32:
+        delta = _difff(rankx, ranky)
     else:
-        raise TypeError("%s not in (int64, int32)" % valx.dtype)
+        raise TypeError("%s not in (int64, int32)" % rankx.dtype)
 
     return delta
 
 
 def _floatdiff(x, y):
     """ Return the order distance from float64 x to float64 y """
-    valx = _rank(x)
-    valy = _rank(y)
-    return _diff(valx, valy)
+    rankx = _rank(x)
+    ranky = _rank(y)
+    return _diff(rankx, ranky)
 
 
 def _floatdifff(x, y):
     """ Return the order distance from float32 x to float32 y """
-    valx = _rankf(x)
-    valy = _rankf(y)
-    return _difff(valx, valy)
+    rankx = _rankf(x)
+    ranky = _rankf(y)
+    return _difff(rankx, ranky)
 
 
 def _rank(x):
@@ -150,21 +150,21 @@ def _rankf(x):
     return value
 
 
-def _diff(valx, valy):
-    """ Return the valuation difference from int64 valx to int64 valy """
+def _diff(rankx, ranky):
+    """ Return the valuation difference from int64 rankx to int64 ranky """
     shift = int64(32)
     mask = int64((1 << 32) - 1)
     scale = float64(mask + 1)
-    hi = valy >> shift
-    hi -= valx >> shift
-    lo = valy & mask
-    lo -= valx & mask
+    hi = ranky >> shift
+    hi -= rankx >> shift
+    lo = ranky & mask
+    lo -= rankx & mask
     out = scale * hi
     out += lo
     return out
 
 
-def _difff(valx, valy):
-    """ Return the valuation difference from int32 valx to int32 valy """
-    delta = valy.astype(int64) - valx
+def _difff(rankx, ranky):
+    """ Return the valuation difference from int32 rankx to int32 ranky """
+    delta = ranky.astype(int64) - rankx
     return delta.astype(float64)

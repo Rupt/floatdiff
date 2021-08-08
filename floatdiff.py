@@ -54,23 +54,20 @@ def bits(delta):
         and so on.
     """
     delta = float(delta)
-    distance = abs(delta)
-    return log2(distance + 1.)
+    return log2(abs(delta) + 1.)
 
 
 def floatdiff(x, y):
     """ Return the order difference from x to y. """
-    valx = rank(x)
-    valy = rank(y)
-    return diff(valx, valy)
+    return diff(rank(x), rank(y))
 
 
-def diff(valx, valy):
-    """ Return the difference of valuations valx and valy.
+def diff(rankx, ranky):
+    """ Return the difference of valuations rankx and ranky.
 
         Trivial, but included for consistency with other modules.
     """
-    return float(valy - valx)
+    return float(ranky - rankx)
 
 
 def rank(x):

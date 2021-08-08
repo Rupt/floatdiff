@@ -48,8 +48,8 @@ static inline double floatdifff(float x, float y);
 static inline int64_t floatdiff_rank(double x);
 static inline int32_t floatdiff_rankf(float x);
 
-static inline double floatdiff_diff(int64_t valx, int64_t valy);
-static inline double floatdiff_difff(int32_t valx, int32_t valy);
+static inline double floatdiff_diff(int64_t rankx, int64_t ranky);
+static inline double floatdiff_difff(int32_t rankx, int32_t ranky);
 
 static inline int64_t floatdiff_sar(int64_t m, char n);
 
@@ -81,18 +81,18 @@ floatdiff_bits(double delta)
 static inline double
 floatdiff(double x, double y)
 {
-    int64_t valx = floatdiff_rank(x);
-    int64_t valy = floatdiff_rank(y);
-    return floatdiff_diff(valx, valy);
+    int64_t rankx = floatdiff_rank(x);
+    int64_t ranky = floatdiff_rank(y);
+    return floatdiff_diff(rankx, ranky);
 }
 
 
 static inline double
 floatdifff(float x, float y)
 {
-    int32_t valx = floatdiff_rankf(x);
-    int32_t valy = floatdiff_rankf(y);
-    return floatdiff_difff(valx, valy);
+    int32_t rankx = floatdiff_rankf(x);
+    int32_t ranky = floatdiff_rankf(y);
+    return floatdiff_difff(rankx, ranky);
 }
 
 
@@ -134,21 +134,21 @@ floatdiff_rankf(float x)
  * 32-bit parts and recombine them as doubles.
  */
 static inline double
-floatdiff_diff(int64_t valx, int64_t valy)
+floatdiff_diff(int64_t rankx, int64_t ranky)
 {
     const int shift = 32;
     const int64_t mask = (1llu << shift) - 1;
     const double scale = mask + 1;
-    int64_t hi = floatdiff_sar(valy, shift) - floatdiff_sar(valx, shift);
-    int64_t lo = (valy & mask) - (valx & mask);
+    int64_t hi = floatdiff_sar(ranky, shift) - floatdiff_sar(rankx, shift);
+    int64_t lo = (ranky & mask) - (rankx & mask);
     return scale*hi + lo;
 }
 
 
 static inline double
-floatdiff_difff(int32_t valx, int32_t valy)
+floatdiff_difff(int32_t rankx, int32_t ranky)
 {
-    return (int64_t) valy - valx;
+    return (int64_t) ranky - rankx;
 }
 
 
