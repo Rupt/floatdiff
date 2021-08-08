@@ -15,7 +15,7 @@ test-numpy: test_numpy.py
 	python test_numpy.py
 
 
-test-c: test.c dulp.c
+test-c: test.c floatdiff.c
 	$(CC) test.c -o $@ $(CFLAGS) $(LDFLAGS)
 	./$@
 

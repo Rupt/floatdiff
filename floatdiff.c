@@ -1,35 +1,32 @@
 /*
- * Floating point differences --- dulp
+ * Floating point differences
  *
- * dulp`_ measures directed differences between floating point numbers
- * by counting the discrete spaces between them.
+ * Measure directed differences between floating point numbers by counting the
+ * discrete spaces between them.
  *
  * This distance was proposed by an anonymous reviewer to
  * "On the definition of ulp(x)" (JM Muller 2005).
  *
- *
  * #include <stdint.h>
- * #include "dulp.c"
+ * #include "floatdiff.c"
  *
- * dulp(1., 1. + pow(2, -52)); // 1.
- * dulp((1. + sqrt(5))/2, 1.6180339887); // -224707.
- * dulpf(-0., 0.) // 1.f
+ * floatdiff(1., 1. + pow(2, -52)); // 1.
+ * floatdiff((1. + sqrt(5))/2, 1.6180339887); // -224707.
+ * floatdifff(-0., 0.) // 1.f
  *
- *
- * Each float or double gets an integer valuation val(x) which satisfies
- *     val(0.) == 0
+ * Each float or double gets an integer valuation rank(x) which satisfies
+ *     rank(0.) == 0
  * and
- *     val(nextafter(x)) == val(x) + 1
+ *     rank(nextafter(x)) == rank(x) + 1 .
  *
  * Floats almost have this naturally when reinterpreted as integers,
  * but are reversed for negative numbers.
  * We just reverse negative numbers' order.
  *
- * The dulp directed distance from x to y equals val(y) - val(x), in
- * double precision for convenience with small and large distances.
+ * The directed distance from x to y equals rank(y) - rank(x), in double
+ * precision for convenience with small and large distances.
  *
- * dulpbits converts the dulp distance to a bits-precision equivalent.
- *
+ * floatdiff_bits converts the distance to a bits-precision equivalent.
  *
  * Assumes IEEE 764 binary64 and binary32 for doubles and floats.
  *
@@ -42,22 +39,22 @@
  *     int64_t, int32_t
  */
 
-static inline double dulpbits(double delta);
+static inline double floatdiff_bits(double delta);
 
-static inline double dulp(double x, double y);
-static inline double dulpf(float x, float y);
+static inline double floatdiff(double x, double y);
+static inline double floatdifff(float x, float y);
 
-static inline int64_t dulpval(double x);
-static inline int32_t dulpvalf(float x);
+static inline int64_t floatdiff_rank(double x);
+static inline int32_t floatdiff_rankf(float x);
 
-static inline double dulpdif(int64_t valx, int64_t valy);
-static inline double dulpdiff(int32_t valx, int32_t valy);
+static inline double floatdiff_diff(int64_t valx, int64_t valy);
+static inline double floatdiff_difff(int32_t valx, int32_t valy);
 
-static inline int64_t dulpsar(int64_t m, char n);
+static inline int64_t floatdiff_sar(int64_t m, char n);
 
 
 /*
- * Bits-equivalent of dulp distance delta.
+ * Bits-equivalent of floatdiff distance delta.
  *
  * Specified such that
  *     bits(0) == 0
@@ -68,7 +65,7 @@ static inline int64_t dulpsar(int64_t m, char n);
  * and so on.
  */
 static inline double
-dulpbits(double delta)
+floatdiff_bits(double delta)
 {
     return log2(fabs(delta) + 1.);
 }
@@ -81,20 +78,20 @@ dulpbits(double delta)
  * representation allows signed differences between 64 bit integers.
  */
 static inline double
-dulp(double x, double y)
+floatdiff(double x, double y)
 {
-    int64_t valx = dulpval(x);
-    int64_t valy = dulpval(y);
-    return dulpdif(valx, valy);
+    int64_t valx = floatdiff_rank(x);
+    int64_t valy = floatdiff_rank(y);
+    return floatdiff_diff(valx, valy);
 }
 
 
 static inline double
-dulpf(float x, float y)
+floatdifff(float x, float y)
 {
-    int32_t valx = dulpvalf(x);
-    int32_t valy = dulpvalf(y);
-    return dulpdiff(valx, valy);
+    int32_t valx = floatdiff_rankf(x);
+    int32_t valy = floatdiff_rankf(y);
+    return floatdiff_difff(valx, valy);
 }
 
 
@@ -112,7 +109,7 @@ dulpf(float x, float y)
  *     return i;
  */
 static inline int64_t
-dulpval(double x)
+floatdiff_rank(double x)
 {
     const int64_t mask = (1llu << 63) - 1;
     union {double f64; int64_t i64;} word = {x};
@@ -121,7 +118,7 @@ dulpval(double x)
 
 
 static inline int32_t
-dulpvalf(float x)
+floatdiff_rankf(float x)
 {
     const int32_t mask = (1lu << 31) - 1;
     union {float f32; int32_t i32;} word = {x};
@@ -136,19 +133,19 @@ dulpvalf(float x)
  * 32-bit parts and recombine them as doubles.
  */
 static inline double
-dulpdif(int64_t valx, int64_t valy)
+floatdiff_diff(int64_t valx, int64_t valy)
 {
     const int shift = 32;
     const int64_t mask = (1llu << shift) - 1;
     const double scale = mask + 1;
-    int64_t hi = dulpsar(valy, shift) - dulpsar(valx, shift);
+    int64_t hi = floatdiff_sar(valy, shift) - floatdiff_sar(valx, shift);
     int64_t lo = (valy & mask) - (valx & mask);
     return scale*hi + lo;
 }
 
 
 static inline double
-dulpdiff(int32_t valx, int32_t valy)
+floatdiff_difff(int32_t valx, int32_t valy)
 {
     return (int64_t) valy - valx;
 }
@@ -159,7 +156,7 @@ dulpdiff(int32_t valx, int32_t valy)
  * From github.com/Rupt/c-arithmetic-right-shift
  */
 static inline int64_t
-dulpsar(int64_t m, char n)
+floatdiff_sar(int64_t m, char n)
 {
     const int logical = (-1llu >> 1) > 0;
     uint64_t fixu = -(logical & (m < 0));
