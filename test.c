@@ -96,7 +96,7 @@ test_readme()
 {
     assert(floatdiff(1., 1. + pow(2, -52)) == 1.);
     assert(floatdiff((1 + sqrt(5))/2, 1.6180339887) == -224707.);
-    assert(floatdifff(-0., 0.) == 1.f);
+    assert(floatdifff(-0., 0.) == 1);
 }
 
 
@@ -109,5 +109,4 @@ main()
     test_rankf();
     test_bits();
     test_readme();
-    return 0;
 }
