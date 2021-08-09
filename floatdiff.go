@@ -1,6 +1,29 @@
-// WIP implementation in go
-// TODO comments
-// TODO header
+// Floating point differences
+//
+// Measure directed differences between floating point numbers by enumerating
+// the discrete spaces between them.
+//
+// This distance was proposed by an anonymous reviewer to
+// "On the definition of ulp(x)" (JM Muller 2005).
+//
+// Floatdiff(1., 1. + Pow(2, -52)); // 1.
+// Floatdiff((1. + Sqrt(5))/2, 1.6180339887); // -224707.
+// Floatdiff32(-0., 0.) // 1.
+//
+// Each float gets an integer valuation Rank(x) which satisfies
+//     Rank(0) == 0
+// and
+//     Rank(Nextafter(x)) == Rank(x) + 1 .
+//
+// Floats almost have this naturally when reinterpreted as integers, but are
+// reversed for negative numbers.
+//
+// We just reverse negative numbers' order.
+//
+// The directed distance from x to y equals Rank(y) - Rank(x), in float64
+// precision for coverage of small and large distances.
+//
+// Bits converts the distance to a bits-precision equivalent.
 package floatdiff
 
 import (
