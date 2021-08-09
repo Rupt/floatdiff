@@ -18,7 +18,7 @@ func TestBits(t *testing.T) {
 		}
 	}
 
-	check_lt := func(arg, want float64
+	check_lt := func(arg, want float64) {
 		if got := Bits(arg); !(got < want) {
 			t.Errorf("!(Bits(%g) < %g); got %g", arg, want, got)
 		}
