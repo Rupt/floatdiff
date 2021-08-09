@@ -2,7 +2,7 @@ Floating point differences
 ===================================
 
 `floatdiff`_ measures directed differences between floating point numbers by
-counting the discrete spaces between them.
+counting the spaces between them.
 
 
 This distance was proposed by an anonymous reviewer to
