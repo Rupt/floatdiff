@@ -8,6 +8,9 @@ counting the discrete spaces between them.
 This distance was proposed by an anonymous reviewer to
 *"On the definition of ulp(x)"* (JM Muller 2005).
 
+
+Various implementations included.
+
 **python**
 
 .. code-block:: python
@@ -40,7 +43,18 @@ This distance was proposed by an anonymous reviewer to
 
     floatdiff(1., 1. + pow(2, -52)); /* 1. */
     floatdiff((1. + sqrt(5))/2, 1.6180339887); /* -224707. */
-    floatdifff(-0., 0.) /* 1.f */
+    floatdifff(-0., 0.) /* 1. */
+
+
+**go**
+
+.. code-block:: go
+
+    floatdiff.Floatdiff(1, 1 + math.Pow(2, -52)) // 1.
+    floatdiff.Floatdiff((1 + math.Sqrt(5))/2, 1.6180339887) // -224707.
+    zero := float32(0)
+    floatdiff.Floatdiff32(-zero, 0) // 1.
+
 
 Details
 -------
