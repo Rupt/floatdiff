@@ -12,7 +12,7 @@
  *
  * floatdiff(1., 1. + pow(2, -52)); // 1.
  * floatdiff((1. + sqrt(5))/2, 1.6180339887); // -224707.
- * floatdifff(-0., 0.) // 1.f
+ * floatdifff(-0., 0.) // 1.
  *
  * Each float or double gets an integer valuation rank(x) which satisfies
  *     rank(0.) == 0
