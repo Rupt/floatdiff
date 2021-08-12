@@ -1,4 +1,4 @@
-// Floating point differences
+// Package floatdiff finds differences between floating point numbers.
 //
 // Measure directed differences between floating point numbers by enumerating
 // the discrete spaces between them.
@@ -65,7 +65,7 @@ func Rank(x float64) int64 {
 	return (ibits >> 63) ^ (ibits & mask)
 }
 
-// Rank returns the int32 index of x in the universe of ordered float32.
+// Rank32 returns the int32 index of x in the universe of ordered float32.
 //
 // It satisfies
 //  Rank32(0) == 0
